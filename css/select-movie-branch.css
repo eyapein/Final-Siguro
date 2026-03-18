@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+
+body {
+    margin: 0;
+    background: url('../mainbg/Main.png') center / cover no-repeat fixed;
+    color: white;
+    /* FONT COLOR - Page Body Text */
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 0;
+    pointer-events: none;
+}
+
+a {
+    color: #fafafab9;
+    /* FONT COLOR - Branch Link */
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #fafafa;
+    /* FONT COLOR - Branch Link Hover */
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.address {
+    color: rgba(255, 255, 255, 0.7);
+    /* FONT COLOR - Cinema Address */
+    white-space: pre-line;
+}
+
+h2,
+h3 {
+    margin-top: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px 30px;
+    background: rgba(85, 138, 206, 0.308);
+    border-radius: 12px;
+    border: 1px solid rgb(85, 138, 206);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 15px rgb(85, 138, 206), 0 8px 16px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+}

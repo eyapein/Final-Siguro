@@ -1,0 +1,345 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    background-color: #0b0b0b;
+    color: #fff;
+    min-height: 100vh;
+    padding: 0;
+    position: relative;
+}
+
+/* ── Full-page background with overlay ──────────────────────── */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('../mainbg/Main.png') center / cover no-repeat;
+    z-index: -2;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: -1;
+}
+
+/* ── Top Header Bar ─────────────────────────────────────────── */
+.nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 15px 40px;
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.nav-header .logo img {
+    height: 35px;
+    width: auto;
+}
+
+.nav-header .header-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ccc;
+    letter-spacing: 0.5px;
+}
+
+.nav-header .btn-back {
+    background: transparent;
+    color: #ccc;
+    padding: 8px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-header .btn-back:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ── Settings Container ─────────────────────────────────────── */
+.settings-container {
+    max-width: 850px;
+    margin: 40px auto;
+    padding: 0 20px 40px;
+    position: relative;
+}
+
+/* ── Watermark Logo ─────────────────────────────────────────── */
+.settings-container::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 700px;
+    aspect-ratio: 16 / 5;
+    background: url('../images/brand x.png') no-repeat center / contain;
+    opacity: 0.03;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.settings-container>* {
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Page Header ────────────────────────────────────────────── */
+.page-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.page-header p {
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 400;
+    font-size: 0.95rem;
+}
+
+/* ── Settings Sections ──────────────────────────────────────── */
+.settings-section {
+    margin-bottom: 30px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(8px);
+}
+
+.settings-section h2 {
+    color: #fff;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(85, 138, 206, 0.3);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+/* ── Current Info Box ───────────────────────────────────────── */
+.current-info {
+    background: rgba(85, 138, 206, 0.08);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(85, 138, 206, 0.2);
+}
+
+.current-info-label {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.85em;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.current-info-value {
+    color: #e0e0e0;
+    font-weight: 600;
+    font-size: 1.05em;
+}
+
+/* ── Form Styles ────────────────────────────────────────────── */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #ccc;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95em;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s ease, box-shadow 0.3s;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #558ace;
+    box-shadow: 0 0 0 2px rgba(85, 138, 206, 0.25);
+}
+
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+/* ── Password Requirements ──────────────────────────────────── */
+.password-requirements {
+    font-size: 0.85em;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 5px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* ── Buttons ────────────────────────────────────────────────── */
+.btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #558acebd 0%, #558ace 50%, #558ace4f 100%);
+    color: white;
+    box-shadow: 0 4px 20px rgba(85, 138, 206, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(85, 138, 206, 0.45);
+}
+
+/* ── Messages ───────────────────────────────────────────────── */
+.message {
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
+.message.success {
+    background: rgba(76, 175, 80, 0.12);
+    color: #8ec98e;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.message.error {
+    background: rgba(244, 67, 54, 0.12);
+    color: #ff8a8a;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+/* ── Back Link ──────────────────────────────────────────────── */
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #558ace;
+    text-decoration: none;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    transition: color 0.3s;
+}
+
+.back-link:hover {
+    color: #7ab5ff;
+    text-decoration: underline;
+}
+
+.text-center {
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .nav-header {
+        padding: 12px 20px;
+    }
+
+    .nav-header .logo img {
+        height: 28px;
+    }
+
+    .settings-container {
+        padding: 0 15px 30px;
+        margin: 20px auto;
+    }
+
+    .page-header h1 {
+        font-size: 1.5em;
+    }
+
+    .settings-section {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-header {
+        padding: 10px 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .settings-container {
+        padding: 0 12px 20px;
+        margin: 15px auto;
+    }
+
+    .page-header h1 {
+        font-size: 1.3em;
+    }
+
+    .settings-section {
+        padding: 15px;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+}

@@ -1,0 +1,49 @@
+/* Food item styles for seat-reservation.php */
+.food-item {
+    position: relative;
+    background: rgba(85, 138, 206, 0.308);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+}
+
+.food-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.food-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.food-controls button {
+    background: #558ace;
+    border: none;
+    color: white;
+    /* FONT COLOR - Food Control Button */
+    font-weight: 700;
+    font-size: 14px;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.food-controls button:hover {
+    background: #0099cc;
+}
+
+.food-controls span {
+    font-size: 14px;
+    font-weight: 600;
+    width: 20px;
+    text-align: center;
+    color: #fff;
+    /* FONT COLOR - Food Quantity Number */
+}

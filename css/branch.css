@@ -1,0 +1,300 @@
+/* === GLOBAL STYLES === */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  /* Body text Regular */
+  box-sizing: border-box;
+  background: url('../mainbg/Main.png') center / cover no-repeat fixed;
+  color: white;
+  /* FONT COLOR - Page Body Text */
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* === HEADER (NEW DESIGN) === */
+header {
+  background-color: #000;
+  color: white;
+  /* FONT COLOR - Header Text */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 0px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.logo img.ticketix-logo {
+  width: 45px;
+  height: auto;
+}
+
+nav a {
+  color: white;
+  /* FONT COLOR - Nav Link */
+  text-decoration: none;
+  margin: 0 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  /* Medium for navigation */
+  font-size: 15px;
+}
+
+nav a:hover,
+nav a.active {
+  color: #BDD3DB;
+  /* FONT COLOR - Nav Link Active/Hover */
+}
+
+.nav-search-form {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: 1px solid rgba(126, 141, 147, 0.5);
+  border-radius: 30px;
+  padding: 4px 10px;
+}
+
+.nav-search-label {
+  margin-right: 8px;
+  font-size: 13px;
+  color: #ddd;
+  /* FONT COLOR - Search Label */
+}
+
+.nav-search-input {
+  background: transparent;
+  border: none;
+  color: white;
+  /* FONT COLOR - Search Input Text */
+  outline: none;
+  font-size: 14px;
+  width: 140px;
+}
+
+.nav-search-btn {
+  background: transparent;
+  border: none;
+  color: #BDD3DB;
+  /* FONT COLOR - Search Button Icon */
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.ticket-btn {
+  background: linear-gradient(to right, #558acebd, #558ace);
+  color: white;
+  /* FONT COLOR - Ticket Button */
+  padding: 8px 18px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Buttons use Bold */
+  transition: 0.3s ease;
+}
+
+.ticket-btn:hover {
+  background: linear-gradient(to right, #558ace, #558acebd);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(85, 138, 206, 0.4);
+}
+
+.user-profile .profile-circle {
+  width: 35px;
+  height: 35px;
+  background: linear-gradient(135deg, #7E8D93, #373D3F);
+  border-radius: 50%;
+}
+
+/* === CINEMA LIST SECTION === */
+main {
+  max-width: 960px;
+  margin: 30px auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+h1 {
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Section Headings use Bold */
+  font-size: 26px;
+  margin-bottom: 30px;
+}
+
+.cinema-list {
+  border-top: 3px solid rgba(255, 255, 255, 0.15);
+}
+
+.cinema-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cinema-item img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  margin-right: 20px;
+  border-radius: 4px;
+  border: 1px solid rgba(126, 141, 147, 0.3);
+}
+
+.cinema-info {
+  flex: 1;
+}
+
+.cinema-info h2 {
+  margin: 0 0 6px 0;
+  font-size: 18px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  /* Card Titles use SemiBold */
+}
+
+.cinema-info p {
+  margin: 0 0 10px 0;
+  font-size: 13px;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.7);
+  /* FONT COLOR - Cinema Address */
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  /* Body text Regular */
+}
+
+.cinema-info a {
+  font-size: 13px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Bold for links */
+  color: #558ace;
+  /* FONT COLOR - Cinema Link */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.cinema-info a:hover {
+  text-decoration: underline;
+  color: #7ba8e6;
+  /* FONT COLOR - Cinema Link Hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  header {
+    padding: 10px 20px;
+  }
+
+  nav a {
+    font-size: 13px;
+    margin: 0 8px;
+  }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    /* Maintain Bold */
+  }
+
+  .cinema-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .cinema-item img {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+
+  .cinema-info h2 {
+    font-size: 16px;
+    font-weight: 600;
+    /* Maintain SemiBold */
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    padding: 8px 15px;
+    flex-wrap: wrap;
+  }
+
+  h1 {
+    font-size: 20px;
+    font-weight: 700;
+    /* Maintain Bold */
+  }
+
+  .cinema-info h2 {
+    font-size: 14px;
+    font-weight: 600;
+    /* Maintain SemiBold */
+  }
+
+  .cinema-info p {
+    font-size: 12px;
+  }
+}
+
+/*BACK BUTTON */
+.back-btn {
+  background: transparent;
+  border: 2px solid #558ace6e;
+  color: #558ace;
+  /* FONT COLOR - Back Button */
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Buttons use Bold */
+  border-radius: 30px;
+  padding: 8px 18px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.back-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.back-btn:hover {
+  background: #558acebd;
+  color: #fff;
+  /* FONT COLOR - Back Button Hover */
+  transform: translateY(-2px);
+}

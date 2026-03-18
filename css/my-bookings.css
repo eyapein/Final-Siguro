@@ -1,0 +1,494 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    background-color: #0b0b0b;
+    color: #fff;
+    min-height: 100vh;
+    padding: 0;
+    position: relative;
+}
+
+/* ── Full-page background with overlay ──────────────────────── */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('../mainbg/Main.png') center / cover no-repeat;
+    z-index: -2;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: -1;
+}
+
+/* ── Main Container ─────────────────────────────────────────── */
+.bookings-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px 40px;
+    position: relative;
+}
+
+/* ── Watermark Logo ─────────────────────────────────────────── */
+.bookings-container::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 800px;
+    aspect-ratio: 16 / 5;
+    background: url('../images/brand x.png') no-repeat center / contain;
+    opacity: 0.03;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.bookings-container > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Page Header ────────────────────────────────────────────── */
+.page-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.page-header h1 {
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.page-header p {
+    color: #ccc;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+/* ── Booking Cards List ─────────────────────────────────────── */
+.bookings-list {
+    display: grid;
+    gap: 20px;
+}
+
+.booking-card {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    gap: 24px;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(8px);
+}
+
+.booking-card:hover {
+    border-color: rgba(85, 138, 206, 0.4);
+    box-shadow: 0 5px 20px rgba(85, 138, 206, 0.15);
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.09);
+}
+
+/* ── Movie Poster ───────────────────────────────────────────── */
+.booking-poster {
+    width: 120px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    flex-shrink: 0;
+    box-shadow: 0 0 15px rgba(85, 138, 206, 0.2), 0 4px 12px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ── Booking Details ────────────────────────────────────────── */
+.booking-details {
+    flex: 1;
+}
+
+.booking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 15px;
+}
+
+.booking-title {
+    font-size: 1.4em;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 5px;
+    letter-spacing: 0.3px;
+}
+
+.booking-branch {
+    color: #ccc;
+    font-size: 0.9em;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+}
+
+/* ── Ticket Status Badges ───────────────────────────────────── */
+.ticket-status {
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-valid {
+    background: rgba(46, 160, 67, 0.18);
+    color: #8ec98e;
+    border: 1px solid rgba(46, 160, 67, 0.3);
+}
+
+.status-pending {
+    background: rgba(210, 165, 45, 0.18);
+    color: #e0c56a;
+    border: 1px solid rgba(210, 165, 45, 0.3);
+}
+
+.status-cancelled {
+    background: rgba(220, 70, 70, 0.18);
+    color: #ff8a8a;
+    border: 1px solid rgba(220, 70, 70, 0.3);
+}
+
+.status-refunded {
+    background: rgba(210, 165, 45, 0.18);
+    color: #e0c56a;
+    border: 1px solid rgba(210, 165, 45, 0.3);
+}
+
+.status-expired {
+    background: rgba(255, 112, 112, 0.568);
+    color: #ffffff;
+    border: 1px solid rgba(226, 145, 145, 0.3);
+}
+
+/* ── Booking Info Grid ──────────────────────────────────────── */
+.booking-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label {
+    font-size: 0.85em;
+    color: #999;
+    margin-bottom: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.75em;
+}
+
+.info-value {
+    font-size: 1em;
+    color: #e0e0e0;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
+/* ── Booking Actions ────────────────────────────────────────── */
+.booking-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.booking-actions .btn {
+    padding: 10px 18px;
+    border-radius: 25px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+.refund-note {
+    width: 100%;
+    margin-top: 10px;
+    font-size: 0.85em;
+    color: #8ec98e;
+    background: rgba(46, 160, 67, 0.1);
+    border: 1px solid rgba(46, 160, 67, 0.2);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+}
+
+/* ── Buttons ────────────────────────────────────────────────── */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #558acebd 0%, #558ace 50%, #558ace4f 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(85, 138, 206, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(85, 138, 206, 0.45);
+    background: linear-gradient(135deg, #558ace 0%, #558aceee 50%, #586164 100%);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #ccc;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ── Empty State ────────────────────────────────────────────── */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+}
+
+.empty-state-icon {
+    font-size: 4em;
+    margin-bottom: 20px;
+}
+
+.empty-state h2 {
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.empty-state p {
+    color: #ccc;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+}
+
+/* ── Back Link ──────────────────────────────────────────────── */
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #558ace;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 8px 18px;
+    border: 1px solid rgba(85, 138, 206, 0.3);
+    border-radius: 25px;
+}
+
+.back-link:hover {
+    background: rgba(85, 138, 206, 0.15);
+    color: #7aa8e0;
+    border-color: rgba(85, 138, 206, 0.5);
+}
+
+/* ── Toast Notification ─────────────────────────────────────── */
+.toast-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.toast-overlay.show {
+    display: block;
+}
+
+.toast-notification {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: rgba(20, 20, 20, 0.95);
+    border: 1px solid rgba(85, 138, 206, 0.3);
+    border-radius: 16px;
+    padding: 30px 35px;
+    text-align: center;
+    z-index: 1000;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(85, 138, 206, 0.15);
+    max-width: 380px;
+    width: 90%;
+    animation: toastIn 0.3s ease forwards;
+}
+
+.toast-notification.show {
+    display: block;
+}
+
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+
+.toast-message {
+    color: #e0e0e0;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 0.95em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.toast-close {
+    background: linear-gradient(135deg, #558acebd 0%, #558ace 50%, #558ace4f 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(85, 138, 206, 0.3);
+}
+
+.toast-close:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(85, 138, 206, 0.45);
+}
+
+.text-center {
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* ── Responsive Design ──────────────────────────────────────── */
+@media (max-width: 768px) {
+    .bookings-container {
+        padding: 0 15px 30px;
+        margin: 20px auto;
+    }
+
+    .page-header h1 {
+        font-size: 1.5em;
+        font-weight: 700;
+    }
+
+    .booking-card {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .booking-poster {
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+    }
+
+    .booking-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .booking-title {
+        font-size: 1.2em;
+        font-weight: 600;
+    }
+
+    .booking-info {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+        font-weight: 700;
+    }
+}
+
+@media (max-width: 480px) {
+    .bookings-container {
+        padding: 0 10px 20px;
+        margin: 15px auto;
+    }
+
+    .page-header h1 {
+        font-size: 1.3em;
+        font-weight: 700;
+    }
+
+    .booking-card {
+        padding: 15px;
+    }
+
+    .booking-title {
+        font-size: 1.1em;
+        font-weight: 600;
+    }
+}

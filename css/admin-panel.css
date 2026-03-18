@@ -1,0 +1,291 @@
+/* Reset & base */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Background Gradient */
+body {
+    background: linear-gradient(135deg, #7E8D93, #373D3F, #FDFDFD);
+    color: #fff; /* FONT COLOR - Admin Body Text */
+    display: flex;
+    height: 100vh;
+    font-weight: 400; /* Body text Regular */
+}
+
+/* Sidebar */
+.sidebar {
+    background: #0e1229;
+    width: 250px;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+.profile-section {
+    text-align: center;
+}
+
+.profile-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    object-fit: cover;
+    border: 3px solid #7E8D93;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-pic.clickable-logo:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(126, 141, 147, 0.5);
+    cursor: pointer;
+}
+
+.profile-section h2 {
+    font-weight: 600;
+    color: #fff; /* FONT COLOR - Sidebar Profile Name */
+}
+
+/* Sidebar navigation links */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-grow: 1;
+}
+
+.sidebar-nav a {
+    color: #b0b0c2; /* FONT COLOR - Sidebar Nav Link */
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 15px;
+    border-radius: 6px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+    background-color: #373D3F;
+    color: #fff; /* FONT COLOR - Sidebar Nav Link Active */
+}
+
+/* Sidebar footer with logout button */
+.sidebar-footer {
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 60px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.logout-btn {
+    display: block;
+    color: #ff6b6b; /* FONT COLOR - Logout Button */
+    text-decoration: none;
+    font-weight: 500;
+    padding: 12px 15px;
+    border-radius: 6px;
+    transition: background 0.3s, color 0.3s;
+    text-align: center;
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.logout-btn:hover {
+    background-color: #ff6b6b;
+    color: #fff; /* FONT COLOR - Logout Button Hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+}
+
+/* Main content area */
+.main-content {
+    flex-grow: 1;
+    padding: 40px 50px;
+    overflow-y: auto;
+}
+
+/* Header */
+header h1 {
+    font-weight: 600;
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #fff; /* FONT COLOR - Admin Page Heading */
+}
+
+header .highlight {
+    color: #ff2a59; /* FONT COLOR - Admin Heading Highlight */
+}
+
+/* Stats cards section */
+/* Stats cards section */
+.stats-cards {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+    justify-content: center; /* Center the row of cards */
+}
+
+.stats-cards .card {
+    flex: 1 1 220px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;      /* stack label + number + icon vertically */
+    justify-content: center;     /* vertically center */
+    align-items: center;         /* horizontally center */
+    text-align: center;          /* center text */
+    color: #cbd5e1; /* FONT COLOR - Stats Card Text */
+    cursor: default;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.stats-cards .card:hover {
+    background: rgba(55, 61, 63, 0.9);
+    color: #fff; /* FONT COLOR - Stats Card Hover */
+    transform: translateY(-4px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-info label {
+    font-weight: 400;
+    font-size: 13px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #dbeafe; /* FONT COLOR - Stats Card Label */
+    text-align: center;
+}
+
+.card-info h3 {
+    font-weight: 700;
+    font-size: 26px;
+    color: #ffffff; /* FONT COLOR - Stats Card Number */
+    margin: 0;
+    text-align: center;
+}
+
+/* Card icon styling */
+.card-icon {
+    font-size: 34px;
+    opacity: 0.6;
+    margin-top: 10px;
+}
+
+
+/* Active movies section */
+.active-movies h2 {
+    font-weight: 60;
+    font-size: 2px;
+    margin-bottom: 20px;
+    color: #fff; /* FONT COLOR - Active Movies Heading */
+}
+
+/* Movies List */
+.movies-list {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.movie-card {
+    width: 200px;               /* Set a fixed smaller width */
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: rgba(255 255 255 / 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;             /* Prevent shrinking */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+.movie-card img {
+    width: 100%;               /* Image fills card width */
+    height: 280px;             /* Fixed height for uniformity; adjust as needed */
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid rgba(255 255 255 / 0.2);
+}
+
+/* Styling movie info text */
+/* Movie Grid Styling for Admin Panel */
+.main-content #now-showing,
+.main-content #coming-soon {
+  padding: 40px 20px;
+  margin: 30px 0;
+  background: linear-gradient(135deg, rgba(126, 141, 147, 0.05), rgba(55, 61, 63, 0.05));
+  border-radius: 20px;
+}
+
+.main-content #now-showing h2 {
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 40px;
+  color: #7E8D93; /* FONT COLOR - Admin Now Showing Heading */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.main-content #coming-soon {
+  background: linear-gradient(135deg, rgba(126, 141, 147, 0.219), rgba(126, 141, 147, 0.082));
+}
+
+.main-content #coming-soon h2 {
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 40px;
+  color: #586164; /* FONT COLOR - Admin Coming Soon Heading */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.main-content .movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  padding: 0 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.movie-info h3 {
+    font-size: 16px;
+    color: white; /* FONT COLOR - Admin Movie Card Title */
+    margin: 0 10px 10px;
+    font-weight: 600;
+}
+
+.price-rating {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px 10px;
+    font-size: 14px;
+    color: #ddd; /* FONT COLOR - Admin Movie Price & Rating */
+}

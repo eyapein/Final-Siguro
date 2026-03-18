@@ -1,0 +1,373 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+body {
+  background: url('loginbg/Main.png') center center / cover no-repeat;
+  background-color: #0a1628;
+  /* fallback if image fails to load */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  position: relative;
+}
+
+/* Dark semi-transparent overlay — background still visible */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Ensure content sits above the overlay */
+.container {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Container Layout --- */
+.container {
+  background: rgba(5, 15, 35, 0.45);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55),
+    0 0 30px rgb(137, 187, 243);
+  position: relative;
+  overflow: hidden;
+
+  /* Responsive scaling */
+  width: 55vw;
+  max-width: 900px;
+  min-width: 700px;
+  height: 85vh;
+  max-height: none;
+  min-height: 480px;
+
+  transition: all 0.5s ease-in-out;
+}
+
+/* Forms */
+.form-container {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
+}
+
+.sign-in-container {
+  left: 0;
+  width: 50%;
+  z-index: 2;
+}
+
+.sign-up-container {
+  left: 0;
+  width: 50%;
+  opacity: 0;
+  z-index: 1;
+}
+
+.container.right-panel-active .sign-in-container {
+  transform: translateX(100%);
+  visibility: hidden;
+}
+
+.container.right-panel-active .sign-up-container {
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 5;
+  visibility: visible;
+}
+
+/* Form styling */
+form {
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  padding: 0 50px;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 60px !important;
+  color: #e8f4fd; /* FONT COLOR - Form Body Text */
+}
+
+form h1 {
+  color: #ffffff; /* FONT COLOR - Form Heading */
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+form p,
+form a {
+  color: #b0d4f1; /* FONT COLOR - Form Paragraph & Links */
+}
+
+/* Scrollbar styling for forms */
+form::-webkit-scrollbar {
+  width: 6px;
+}
+
+form::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+form::-webkit-scrollbar-thumb {
+  background: #7E8D93;
+  border-radius: 10px;
+}
+
+form::-webkit-scrollbar-thumb:hover {
+  background: #373D3F;
+}
+
+/* Signup form specific styling */
+.sign-up-container form {
+  padding: 20px 50px;
+  justify-content: flex-start;
+  padding-top: 30px;
+  padding-bottom: 70px !important;
+}
+
+.sign-up-container form h1 {
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.sign-up-container input {
+  margin: 6px 0;
+  padding: 10px 15px;
+  font-size: 13px;
+}
+
+.sign-up-container button {
+  margin-top: 10px;
+}
+
+input {
+  background-color: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(85, 138, 206);
+  color: #ffffff; /* FONT COLOR - Input Text */
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 100%;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.5); /* FONT COLOR - Input Placeholder */
+}
+
+input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.795);
+}
+
+/* Email input wrapper for error messages */
+.email-input-wrapper {
+  width: 100%;
+  position: relative;
+  margin: 6px 0;
+}
+
+/* Error message styling */
+small {
+  display: block;
+  margin-top: 2px;
+  margin-bottom: 0;
+  font-size: 11px;
+  text-align: left;
+  width: 100%;
+  color: #ff6961; /* FONT COLOR - Error Message */
+  min-height: 14px;
+}
+
+small:empty {
+  display: none;
+}
+
+button {
+  border-radius: 20px;
+  border: 1px solid #558ace;
+  background-color: #558acebd;
+  color: #fff; /* FONT COLOR - Login/Signup Button */
+  font-size: 13px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: .5px;
+  transition: transform 80ms ease-in;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+button.ghost {
+  background-color: transparent;
+  border-color: #fff;
+}
+
+/* Overlay animation */
+.overlay-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 100;
+}
+
+.container.right-panel-active .overlay-container {
+  transform: translateX(-100%);
+}
+
+.overlay {
+  background: linear-gradient(to right, #558acebd, #558acebd);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #ffffff; /* FONT COLOR - Overlay Panel Text */
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.container.right-panel-active .overlay {
+  transform: translateX(50%);
+}
+
+.overlay-panel {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 40px;
+  text-align: center;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+  transform: translateX(-20%);
+}
+
+.container.right-panel-active .overlay-left {
+  transform: translateX(0);
+}
+
+.overlay-right {
+  right: 0;
+  transform: translateX(0);
+}
+
+.container.right-panel-active .overlay-right {
+  transform: translateX(20%);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1000px) {
+  .container {
+    width: 80vw;
+    height: 80vh;
+  }
+
+  form {
+    padding: 0 30px;
+  }
+
+  input {
+    font-size: 13px;
+  }
+}
+
+/* ========== Forgot Password Link Styling ========== */
+.forgot-link {
+  display: block;
+  margin-top: 10px;
+  font-size: 10px;
+  /* ← change this value to adjust the font size */
+  color: #626C70; /* FONT COLOR - Forgot Password Link */
+  /* Ticketix blue color */
+  font-weight: 600;
+  text-align: center;
+  /* align to the right under the password input */
+  margin-right: 0;
+  transition: color 0.3s ease;
+}
+
+.forgot-link:hover {
+  color: #373D3F; /* FONT COLOR - Forgot Password Link Hover */
+  /* hover color */
+  text-decoration: underline;
+}
+
+@media (max-width: 700px) {
+  .container {
+    width: 90vw;
+    min-width: 0;
+  }
+}
+
+/* 💻 1366x768 Monitors */
+@media (max-width: 1366px) {
+  .container {
+    max-width: 850px;
+    height: 75vh;
+  }
+}
+
+/* 🖥️ 1600x900 Monitors */
+@media (min-width: 1367px) and (max-width: 1600px) {
+  .container {
+    max-width: 1000px;
+    height: 78vh;
+  }
+}
+
+/* 🖥️ Full HD (1920x1080) */
+@media (min-width: 1601px) and (max-width: 1920px) {
+  .container {
+    max-width: 1100px;
+    height: 80vh;
+  }
+}
+
+/* 🖥️ 2K Monitors (2560x1440) */
+@media (min-width: 1921px) and (max-width: 2560px) {
+  .container {
+    max-width: 1300px;
+    height: 82vh;
+  }
+}
+
+/* 🖥️ 4K and Above */
+@media (min-width: 2561px) {
+  .container {
+    max-width: 1500px;
+    height: 85vh;
+  }
+}

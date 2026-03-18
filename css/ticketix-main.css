@@ -1,0 +1,1697 @@
+/* Ticketix Main Styles */
+
+/* Import Montserrat font with all weights */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+
+/* User Profile Dropdown Styles */
+.user-profile {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(85, 138, 206, 0.3);
+  background: linear-gradient(135deg, #558acebd, #558ace);
+  color: white;
+  /* FONT COLOR - Profile Button Initials */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  padding: 0;
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Buttons use Bold */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  user-select: none;
+  outline: none;
+}
+
+.profile-button:hover {
+  transform: scale(1.1);
+  border-color: rgba(85, 138, 206, 0.596);
+  box-shadow: 0 4px 12px rgba(126, 141, 147, 0.4);
+}
+
+.profile-button:active {
+  transform: scale(0.95);
+}
+
+.profile-button.active {
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 16px rgba(126, 141, 147, 0.6);
+}
+
+.profile-initials {
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  /* SemiBold */
+  letter-spacing: 0.5px;
+}
+
+.profile-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 12px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  min-width: 220px;
+  z-index: 1000;
+  overflow: hidden;
+  animation: fadeInDown 0.3s ease;
+}
+
+.profile-dropdown.show {
+  display: block;
+}
+
+.dropdown-header {
+  padding: 16px;
+  background: linear-gradient(135deg, #558acebd, #558ace);
+  color: white;
+  /* FONT COLOR - Dropdown Header Name */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dropdown-header-initials {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Bold */
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.dropdown-header-name {
+  font-size: 15px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  /* SemiBold */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  color: #333;
+  /* FONT COLOR - Dropdown Menu Item */
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  /* Regular body text */
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown-item:first-of-type {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.dropdown-item:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.dropdown-icon {
+  margin-right: 10px;
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 4px 0;
+}
+
+/* Smooth scrolling for the entire page */
+html {
+  scroll-behavior: smooth;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Base body text - Regular/Medium */
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+}
+
+/* Unified background wrapper for all main content sections */
+.main-sections-wrapper {
+  background: url('../mainbg/Main.png') center / cover no-repeat;
+  background-attachment: fixed;
+  border-radius: 20px;
+  margin: 15px 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dark semi-transparent overlay — background still visible */
+.main-sections-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Section-specific styling */
+#now-showing {
+  padding: 60px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+#coming-soon {
+  padding: 60px 20px;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Blurred transparent logo watermark behind movie sections */
+#now-showing::before,
+#coming-soon::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 95%;
+  max-width: 1500px;
+  aspect-ratio: 16 / 5;
+  background: url('../images/brand x.png') no-repeat center / contain;
+  opacity: 0.06;
+  filter: blur(0px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+#now-showing h2 {
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 40px;
+  color: #FFFFFF;
+  /* FONT COLOR - Now Showing Section Heading */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Section Headings use Bold */
+  position: relative;
+  z-index: 1;
+}
+
+#coming-soon h2 {
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 40px;
+  color: #FFFFFF;
+  /* FONT COLOR - Coming Soon Section Heading */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Section Headings use Bold */
+  position: relative;
+  z-index: 1;
+}
+
+/* Contact section styling */
+#contact {
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.contact-info h3 {
+  color: #FFFFFF;
+  /* FONT COLOR - Contact Info Subheading */
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  /* Subheadings use SemiBold */
+}
+
+.contact-info p {
+  color: #ecececd8;
+  /* FONT COLOR - Contact Info Body Text */
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  /* Body text Regular */
+}
+
+.contact-form {
+  background: rgba(85, 138, 206, 0.253);
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.contact-form h3 {
+  color: white;
+  /* FONT COLOR - Contact Form Subheading */
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  /* Subheadings use SemiBold */
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 5px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.contact-form textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+.contact-form button {
+  background-color: #558acebd;
+  color: white;
+  /* FONT COLOR - Contact Form Button */
+  border: none;
+  padding: 12px 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Buttons use Bold */
+  font-size: 16px;
+}
+
+.contact-form button:hover {
+  background-color: #558aceee;
+}
+
+.contact-alert {
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 0.95em;
+  line-height: 1.4;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  /* Body text Regular */
+}
+
+.contact-success {
+  background: rgba(198, 239, 206, 0.9);
+  color: #1f7a36;
+  /* FONT COLOR - Contact Success Alert */
+  border: 1px solid rgba(198, 239, 206, 0.7);
+}
+
+.contact-error {
+  background: rgba(248, 215, 218, 0.9);
+  color: #842029;
+  /* FONT COLOR - Contact Error Alert */
+  border: 1px solid rgba(248, 215, 218, 0.7);
+}
+
+.contact-followup {
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.85);
+  /* FONT COLOR - Contact Follow-Up Text */
+  font-size: 0.9em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  /* Captions use Light */
+}
+
+.social-links {
+  margin-top: 20px;
+}
+
+.social-links a {
+  color: white;
+  /* FONT COLOR - Social Links */
+  text-decoration: none;
+  margin-right: 15px;
+  font-size: 18px;
+}
+
+.social-links a:hover {
+  text-decoration: underline;
+}
+
+/* Section Header Styling - Now using standard h2 styling */
+
+/* Movie Grid Styling - Now Showing section uses same layout as Coming Soon */
+
+/* Search Section Styling */
+.search-section {
+  background: rgba(255, 255, 255, 0.1);
+  margin-top: 40px;
+  border-radius: 15px;
+  padding: 30px;
+  text-align: center;
+}
+
+.search-container h3 {
+  color: white;
+  /* FONT COLOR - Search Section Heading */
+  margin-bottom: 10px;
+  font-size: 1.8em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  /* Subheadings use SemiBold */
+}
+
+.search-container p {
+  color: rgba(255, 255, 255, 0.9);
+  /* FONT COLOR - Search Section Subtitle */
+  margin-bottom: 25px;
+  font-size: 1.1em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  /* Body text Regular */
+}
+
+.search-form {
+  display: flex;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-input {
+  flex: 1;
+  padding: 15px 20px;
+  font-size: 16px;
+  border: 2px solid #7E8D93;
+  border-radius: 25px 0 0 25px;
+  outline: none;
+  background: white;
+  color: #333;
+  /* FONT COLOR - Search Input Text */
+}
+
+.search-input:focus {
+  border-color: #373D3F;
+  box-shadow: 0 0 10px rgba(126, 141, 147, 0.3);
+}
+
+.search-btn {
+  padding: 15px 25px;
+  background: linear-gradient(to right, #7E8D93, #373D3F);
+  color: white;
+  /* FONT COLOR - Search Button */
+  border: none;
+  border-radius: 0 25px 25px 0;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Buttons use Bold */
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+
+.search-btn:hover {
+  background: linear-gradient(to right, #373D3F, #7E8D93);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.search-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive design for search bar */
+@media (max-width: 768px) {
+  .search-form {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-input {
+    border-radius: 25px;
+    margin-bottom: 10px;
+  }
+
+  .search-btn {
+    border-radius: 25px;
+    min-width: auto;
+  }
+
+  /* Profile dropdown responsive */
+  .profile-button {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .profile-initials {
+    font-size: 12px;
+  }
+
+  .profile-dropdown {
+    right: 0;
+    min-width: 200px;
+  }
+
+  .dropdown-header {
+    padding: 14px;
+  }
+
+  .dropdown-header-initials {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .dropdown-header-name {
+    font-size: 14px;
+  }
+
+  .dropdown-item {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+}
+
+/* Movie Card Styling - Responsive */
+.movie {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  transform: scale(1.05);
+  /* Display at hover size by default */
+  width: 100%;
+  min-width: 200px;
+  max-width: 300px;
+  height: 450px;
+  /* Fixed height for consistency */
+  margin: 0 auto;
+  /* Poster highlight glow for visibility on dark backgrounds */
+  box-shadow: 0 0 15px rgba(126, 141, 147, 0.4), 0 0 30px rgba(126, 141, 147, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.movie:hover {
+  transform: scale(1.05);
+  /* Keep same size on hover */
+  box-shadow: 0 0 20px rgba(126, 141, 147, 0.6), 0 0 40px rgba(126, 141, 147, 0.25);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.movie img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: filter 0.3s ease;
+}
+
+.movie:hover img {
+  filter: brightness(0.7);
+}
+
+.movie-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  /* FONT COLOR - Movie Card Overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 10px;
+}
+
+.movie:hover .movie-overlay {
+  opacity: 1;
+}
+
+.movie-info {
+  text-align: center;
+  padding: 20px;
+}
+
+.movie-info h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.5em;
+  color: #FFFFFF;
+  /* FONT COLOR - Movie Card Title */
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  /* Card Titles use SemiBold */
+}
+
+.movie-info p {
+  margin: 5px 0 20px 0;
+  font-size: 1em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  /* Body text Regular */
+}
+
+/* Coming Soon movies - always visible info */
+#coming-soon .movie {
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform: scale(1);
+  /* Start at normal size */
+  /* Poster highlight glow for Coming Soon */
+  box-shadow: 0 0 15px rgba(126, 141, 147, 0.4), 0 0 30px rgba(126, 141, 147, 0.15);
+}
+
+/* Coming Soon hover effect - enlarge instead of darken */
+#coming-soon .movie:hover {
+  transform: scale(1.06);
+  /* Slight enlargement on hover - subtle */
+  box-shadow: 0 0 20px rgba(126, 141, 147, 0.6), 0 0 40px rgba(126, 141, 147, 0.25);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+#coming-soon .movie:hover img {
+  filter: brightness(1);
+  /* No darkening - keep original brightness */
+}
+
+#coming-soon .movie-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7));
+  color: white;
+  /* FONT COLOR - Coming Soon Movie Info */
+  padding: 15px;
+  border-radius: 0 0 10px 10px;
+  text-align: center;
+}
+
+#coming-soon .movie-info h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.3em;
+  color: #fafafa;
+  /* FONT COLOR - Coming Soon Movie Title */
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  /* Card Titles use SemiBold */
+}
+
+#coming-soon .movie-info p {
+  margin: 3px 0 8px 0;
+  font-size: 0.9em;
+  color: #ccc;
+  /* FONT COLOR - Coming Soon Movie Subtitle */
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  /* Body text Regular */
+}
+
+#coming-soon .movie-info .release-date {
+  color: #ccc;
+  /* FONT COLOR - Coming Soon Release Date */
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  /* SemiBold for emphasis */
+  font-size: 0.95em;
+  margin: 5px 0 10px 0;
+}
+
+#coming-soon .movie-info .notify-btn {
+  background-color: #373d3f;
+  color: white;
+  /* FONT COLOR - Coming Soon Notify Button */
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Buttons use Bold */
+  font-size: 0.9em;
+  transition: all 0.3s ease;
+}
+
+#coming-soon .movie-info .notify-btn:hover {
+  background-color: #373D3F;
+  transform: translateY(-2px);
+}
+
+.movie-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.action-btn {
+  background-color: #7E8D93;
+  color: white;
+  /* FONT COLOR - Movie Action Button */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Buttons use Bold */
+  transition: all 0.3s ease;
+  font-size: 0.9em;
+}
+
+.action-btn:hover {
+  background-color: #373D3F;
+  transform: translateY(-2px);
+}
+
+.trailer-btn {
+  background-color: #558acebd;
+}
+
+.trailer-btn:hover {
+  background-color: #558ace;
+}
+
+.ticket-btn {
+  background-color: #558acebd;
+}
+
+.ticket-btn:hover {
+  background-color: #558ace;
+}
+
+.release-date {
+  color: #BDD3DB;
+  /* FONT COLOR - Movie Release Date */
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  /* SemiBold for emphasis */
+  margin: 5px 0;
+}
+
+.notify-btn {
+  background-color: #373D3F;
+}
+
+.notify-btn:hover {
+  background-color: #7E8D93;
+}
+
+/* CSS Reset for Hero Carousel - Override ALL browser defaults */
+section#home.hero,
+section#home.hero *,
+section#home.hero *::before,
+section#home.hero *::after {
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  border-top: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  border-left: none !important;
+  outline: none !important;
+  outline-width: 0 !important;
+  outline-style: none !important;
+  outline-color: transparent !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Hero Carousel Styling - COMPLETELY BORDERLESS */
+.hero {
+  position: relative;
+  height: 80vh;
+  overflow: hidden;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none !important;
+  box-sizing: border-box;
+}
+
+/* Ensure all carousel elements are completely borderless */
+.hero *,
+.hero *::before,
+.hero *::after {
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.hero-slides *,
+.hero-slides *::before,
+.hero-slides *::after {
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none !important;
+}
+
+.hero-slide *,
+.hero-slide *::before,
+.hero-slide *::after {
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none !important;
+}
+
+.hero-slides {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none !important;
+  box-sizing: border-box;
+}
+
+.hero-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateX(100%);
+  transition: transform 0.5s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none !important;
+  box-sizing: border-box;
+}
+
+.hero-slide.active {
+  transform: translateX(0);
+}
+
+.hero-slide.prev {
+  transform: translateX(-100%);
+}
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.3);
+  z-index: 1;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none !important;
+  box-sizing: border-box;
+}
+
+/* Hero Trailer Container - plays movie trailer in background */
+.hero-trailer-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.hero-trailer-container.active {
+  opacity: 1;
+}
+
+.hero-trailer-iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 180%;
+  height: 180%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  filter: brightness(0.4);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  color: #FFFFFF !important;
+  /* FONT COLOR - Hero Content Text */
+  max-width: 800px;
+  padding: 0 20px;
+  pointer-events: auto;
+}
+
+.movie-logo {
+  max-width: 300px;
+  max-height: 150px;
+  object-fit: contain;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 10px rgba(126, 141, 147, 0.5));
+}
+
+.hero-content h1 {
+  font-size: 3.5em;
+  margin-bottom: 30px;
+  color: #FFFFFF !important;
+  /* FONT COLOR - Hero Carousel Movie Title */
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 1), 0 0 30px rgba(0, 0, 0, 0.8), 0 0 60px rgba(0, 0, 0, 0.4);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  /* Hero Title uses ExtraBold */
+}
+
+.hero-content p {
+  color: #FFFFFF !important;
+  /* FONT COLOR - Hero Carousel Subtitle (e.g. "Now Showing") */
+  font-size: 1.3em;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 1), 0 0 30px rgba(0, 0, 0, 0.8);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero .btn {
+  background-color: rgba(126, 141, 147, 0.8);
+  color: white;
+  /* FONT COLOR - Hero Button */
+  border: 2px solid #7E8D93;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Buttons use Bold */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+  display: inline-block;
+}
+
+.hero .btn:hover {
+  background-color: #7E8D93;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(126, 141, 147, 0.4);
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  /* FONT COLOR - Carousel Arrow */
+  border: none;
+  font-size: 2em;
+  padding: 20px;
+  cursor: pointer;
+  z-index: 3;
+  transition: background-color 0.3s ease;
+}
+
+.arrow:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.arrow.left {
+  left: 80px;
+}
+
+.arrow.right {
+  right: 80px;
+}
+
+.slide-indicators {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 3;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.indicator.active {
+  background-color: #7E8D93;
+}
+
+.indicator:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Modal Styling */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  animation: fadeIn ease;
+}
+
+.modal-content {
+  background-color: #2f5d912a;
+  /* MOVIE CLICKED BACKGROUND */
+  margin: 5% auto;
+  padding: 30px;
+  border-radius: 15px;
+  width: 80%;
+  max-width: 600px;
+  color: white;
+  /* FONT COLOR - Modal Content Text */
+  position: relative;
+  animation: slideIn 0.3s ease;
+}
+
+.booking-modal {
+  max-width: 500px;
+}
+
+.movie-detail-modal {
+  max-width: 800px;
+}
+
+.trailer-modal {
+  max-width: 900px;
+}
+
+.movie-detail-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+.movie-poster img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.movie-details h2 {
+  color: #FFFFFF;
+  /* FONT COLOR - Movie Detail Title */
+  margin-bottom: 15px;
+  font-size: 2em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Section Headings use Bold */
+}
+
+.movie-details p {
+  margin-bottom: 10px;
+  font-size: 1.1em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  /* Body text Regular */
+}
+
+.movie-description {
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(55, 140, 205, 0.363);
+  border-radius: 8px;
+  border-left: 4px solid #7E8D93;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.modal-actions .btn {
+  flex: 1;
+  padding: 15px 20px;
+  font-size: 1.1em;
+}
+
+.close {
+  color: #aaa;
+  /* FONT COLOR - Modal Close Button */
+  float: right;
+  font-size: 28px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Bold */
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+}
+
+.close:hover {
+  color: #7E8D93;
+  /* FONT COLOR - Modal Close Button Hover */
+}
+
+/* Trailer Modal Specific Styles */
+.trailer-placeholder {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.trailer-icon {
+  font-size: 4em;
+  margin-bottom: 20px;
+}
+
+.trailer-placeholder p {
+  margin-bottom: 15px;
+  font-size: 1.1em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  /* Body text Regular */
+}
+
+#trailerContainer {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+#youtubePlayer {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  /* 16:9 aspect ratio */
+  background: #000;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#trailerVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Booking Form Styles */
+.booking-form {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  /* SemiBold for labels */
+  color: #7E8D93;
+  /* FONT COLOR - Booking Form Label */
+}
+
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  background-color: #2a2a2a;
+  color: white;
+  /* FONT COLOR - Booking Form Select */
+  font-size: 16px;
+}
+
+.form-group select:focus {
+  border-color: #eeeeee;
+  outline: none;
+}
+
+.price-display {
+  background: linear-gradient(to right, #7E8D93, #373D3F);
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.price-display p {
+  font-size: 1.3em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Bold for emphasis */
+  margin: 0;
+}
+
+.book-now-btn {
+  width: 100%;
+  background: linear-gradient(to right, #7E8D93, #373D3F);
+  color: white;
+  /* FONT COLOR - Book Now Button */
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 1.2em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /* Buttons use Bold */
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.book-now-btn:hover {
+  transform: translateY(-2px);
+}
+
+.login-required {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.login-required p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  /* Body text Regular */
+}
+
+.login-required .btn {
+  margin: 0 10px;
+  display: inline-block;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+/* Large tablets and small desktops */
+@media (max-width: 1200px) {
+  .hero-content h1 {
+    font-size: 3em;
+  }
+
+  #now-showing h2,
+  #coming-soon h2 {
+    font-size: 2.2em;
+  }
+
+  .movie-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 992px) {
+  .hero-content h1 {
+    font-size: 2.8em;
+  }
+
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .arrow.left {
+    left: 20px;
+  }
+
+  .arrow.right {
+    right: 20px;
+  }
+}
+
+/* Small tablets and large phones */
+@media (max-width: 768px) {
+  .contact-content {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-content h1 {
+    font-size: 2.5em;
+    font-weight: 800;
+    /* Maintain ExtraBold on mobile */
+  }
+
+  .movie-logo {
+    max-width: 250px;
+    max-height: 120px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .arrow {
+    font-size: 1.5em;
+    padding: 15px;
+  }
+
+  .movie-detail-content {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .trailer-modal {
+    width: 95%;
+    margin: 2% auto;
+  }
+
+  #youtubePlayer {
+    padding-bottom: 56.25%;
+  }
+
+  /* Section-specific responsive styling */
+  #now-showing {
+    padding: 40px 15px;
+    margin: 20px 10px;
+    border-radius: 15px;
+  }
+
+  #coming-soon {
+    padding: 40px 15px;
+    margin: 20px 10px;
+    border-radius: 15px;
+  }
+
+  #now-showing h2,
+  #coming-soon h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
+    font-weight: 700;
+    /* Maintain Bold on mobile */
+  }
+
+  /* Coming Soon movie info responsive */
+  #coming-soon .movie-info {
+    padding: 12px;
+  }
+
+  #coming-soon .movie-info h3 {
+    font-size: 1.2em;
+  }
+
+  #coming-soon .movie-info p {
+    font-size: 0.85em;
+  }
+
+  #coming-soon .movie-info .release-date {
+    font-size: 0.9em;
+  }
+
+  #coming-soon .movie-info .notify-btn {
+    padding: 6px 12px;
+    font-size: 0.8em;
+  }
+
+  /* Movie Grid Responsive - Now Showing uses same responsive design as Coming Soon */
+  .movie-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    padding: 0 10px;
+  }
+
+  .movie {
+    max-width: 220px;
+    height: 330px;
+    min-width: 160px;
+  }
+}
+
+@media (max-width: 600px) {
+
+  /* Profile dropdown for small screens */
+  .profile-button {
+    width: 36px;
+    height: 36px;
+    font-size: 11px;
+  }
+
+  .profile-initials {
+    font-size: 11px;
+  }
+
+  .profile-dropdown {
+    min-width: 180px;
+    margin-top: 8px;
+  }
+
+  .dropdown-header {
+    padding: 12px;
+  }
+
+  .dropdown-header-initials {
+    width: 32px;
+    height: 32px;
+    font-size: 11px;
+  }
+
+  .dropdown-header-name {
+    font-size: 13px;
+  }
+
+  .dropdown-item {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .dropdown-icon {
+    font-size: 14px;
+    margin-right: 8px;
+  }
+
+  /* Enhanced section separation for small screens */
+  #now-showing {
+    padding: 30px 10px;
+    margin: 15px 5px;
+    border-radius: 12px;
+    border: 2px solid rgba(126, 141, 147, 0.2);
+  }
+
+  #coming-soon {
+    padding: 30px 10px;
+    margin: 15px 5px;
+    border-radius: 12px;
+    border: 2px solid rgba(126, 141, 147, 0.2);
+  }
+
+  #now-showing h2,
+  #coming-soon h2 {
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 700;
+    /* Maintain Bold on small screens */
+  }
+
+  #now-showing h2 {
+    background: rgba(126, 141, 147, 0.1);
+  }
+
+  #coming-soon h2 {
+    background: rgba(102, 99, 99, 0.95);
+  }
+
+  /* Coming Soon movie info for small screens */
+  #coming-soon .movie-info {
+    padding: 10px;
+  }
+
+  #coming-soon .movie-info h3 {
+    font-size: 1.1em;
+  }
+
+  #coming-soon .movie-info p {
+    font-size: 0.8em;
+  }
+
+  #coming-soon .movie-info .release-date {
+    font-size: 0.85em;
+  }
+
+  #coming-soon .movie-info .notify-btn {
+    padding: 5px 10px;
+    font-size: 0.75em;
+  }
+
+  .movie-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    padding: 0 5px;
+  }
+
+  .movie {
+    max-width: 180px;
+    height: 270px;
+    min-width: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  /* Maximum section separation for very small screens */
+  #now-showing {
+    padding: 25px 8px;
+    margin: 10px 3px;
+    border-radius: 10px;
+    border: 3px solid rgba(126, 141, 147, 0.3);
+  }
+
+  #coming-soon {
+    padding: 25px 8px;
+    margin: 10px 3px;
+    border-radius: 10px;
+    border: 3px solid rgba(126, 141, 147, 0.3);
+  }
+
+  #now-showing h2,
+  #coming-soon h2 {
+    font-size: 1.6em;
+    margin-bottom: 20px;
+    padding: 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    /* Maintain Bold on very small screens */
+  }
+
+  /* Coming Soon movie info for very small screens */
+  #coming-soon .movie-info {
+    padding: 8px;
+  }
+
+  #coming-soon .movie-info h3 {
+    font-size: 1em;
+  }
+
+  #coming-soon .movie-info p {
+    font-size: 0.75em;
+  }
+
+  #coming-soon .movie-info .release-date {
+    font-size: 0.8em;
+  }
+
+  #coming-soon .movie-info .notify-btn {
+    padding: 4px 8px;
+    font-size: 0.7em;
+  }
+
+  .movie-grid {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 8px;
+    padding: 0 5px;
+  }
+
+  .movie {
+    max-width: 150px;
+    height: 225px;
+    min-width: 120px;
+  }
+
+  .hero-content h1 {
+    font-size: 2em;
+    font-weight: 800;
+    /* Maintain ExtraBold on very small screens */
+  }
+
+  .hero .btn {
+    font-size: 0.95em;
+    padding: 12px 24px;
+    font-weight: 700;
+    /* Maintain Bold on very small screens */
+  }
+
+  .arrow {
+    font-size: 1.2em;
+    padding: 10px;
+  }
+
+  .arrow.left {
+    left: 10px;
+  }
+
+  .arrow.right {
+    right: 10px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+  .hero-content h1 {
+    font-size: 1.8em;
+    font-weight: 800;
+    /* Maintain ExtraBold */
+  }
+
+  #now-showing h2,
+  #coming-soon h2 {
+    font-size: 1.4em;
+    font-weight: 700;
+    /* Maintain Bold */
+  }
+
+  .movie-grid {
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 6px;
+  }
+
+  .movie {
+    max-width: 130px;
+    height: 195px;
+    min-width: 100px;
+  }
+}
