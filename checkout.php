@@ -141,19 +141,27 @@ $userId = $_SESSION['user_id'] ?? $_SESSION['acc_id'] ?? null;
 // Check PWD discount eligibility
 $pwdApproved = false;
 $pwdDiscount  = 0;
+// Check Senior Citizen discount eligibility
+$seniorApproved = false;
+$seniorDiscount = 0;
 if ($userId) {
-    $pwdStmt = $conn->prepare("SELECT pwd_approved FROM USER_ACCOUNT WHERE acc_id = ?");
-    $pwdStmt->bind_param("i", $userId);
-    $pwdStmt->execute();
-    $pwdRow = $pwdStmt->get_result()->fetch_assoc();
-    $pwdStmt->close();
-    if ($pwdRow && !empty($pwdRow['pwd_approved'])) {
-        $pwdApproved = true;
-        $pwdDiscount = $seatTotal * 0.20;
+    $discountStmt = $conn->prepare("SELECT pwd_approved, senior_approved FROM USER_ACCOUNT WHERE acc_id = ?");
+    $discountStmt->bind_param("i", $userId);
+    $discountStmt->execute();
+    $discountRow = $discountStmt->get_result()->fetch_assoc();
+    $discountStmt->close();
+    if ($discountRow) {
+        if (!empty($discountRow['pwd_approved'])) {
+            $pwdApproved = true;
+            $pwdDiscount = $seatTotal * 0.20;
+        } elseif (!empty($discountRow['senior_approved'])) {
+            $seniorApproved = true;
+            $seniorDiscount = $seatTotal * 0.20;
+        }
     }
 }
 
-$grandTotal = $seatTotal + $foodTotal - $pwdDiscount;
+$grandTotal = $seatTotal + $foodTotal - $pwdDiscount - $seniorDiscount;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -168,11 +176,11 @@ $grandTotal = $seatTotal + $foodTotal - $pwdDiscount;
     <?php
     // PWD banner: show if user has no pending/approved application
     $showPwdBannerCheckout = false;
-    if ($userId && !$pwdApproved) {
+    if ($userId && !$pwdApproved && !$seniorApproved) {
         $conn2 = getDBConnection();
-        $bannerCheckTbl = $conn2->query("SHOW TABLES LIKE 'PWD_APPLICATIONS'");
+        $bannerCheckTbl = $conn2->query("SHOW TABLES LIKE 'DISCOUNT_APPLICATIONS'");
         if ($bannerCheckTbl && $bannerCheckTbl->num_rows > 0) {
-            $bStmt = $conn2->prepare("SELECT status FROM PWD_APPLICATIONS WHERE acc_id = ? ORDER BY submitted_at DESC LIMIT 1");
+            $bStmt = $conn2->prepare("SELECT status FROM DISCOUNT_APPLICATIONS WHERE acc_id = ? AND discount_type = 'pwd' ORDER BY submitted_at DESC LIMIT 1");
             $bStmt->bind_param("i", $userId);
             $bStmt->execute();
             $bRow = $bStmt->get_result()->fetch_assoc();
@@ -202,7 +210,7 @@ $grandTotal = $seatTotal + $foodTotal - $pwdDiscount;
       transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1),opacity 0.5s ease;
       opacity:0;
     ">
-      <span>Have you submitted your PWD ID to have a 20% discount? <a href="profile.php#pwd" style="color:#7ab5ff;font-weight:600;text-decoration:underline;">Apply on your Profile.</a></span>
+      <span>Have you submitted your PWD ID or Senior Citizen ID to have a 20% discount? <a href="profile.php#pwd" style="color:#7ab5ff;font-weight:600;text-decoration:underline;">Apply on your Profile.</a></span>
       <button onclick="dismissPwdToast()" style="background:none;border:none;color:rgba(255,255,255,0.45);cursor:pointer;font-size:1rem;padding:0 2px;line-height:1;flex-shrink:0;">x</button>
     </div>
     <script>
@@ -252,8 +260,16 @@ $grandTotal = $seatTotal + $foodTotal - $pwdDiscount;
                 <h2>Booking Summary</h2>
                 <div class="detail-row">
                     <strong>Branch:</strong>
-                    <span><?= htmlspecialchars($branchName ?: 'SM Mall of Asia') ?></span>
+                    <span><?= htmlspecialchars($branchName ?: 'TICKETIX') ?></span>
                 </div>
+                <?php
+                $cinemaNameDisplay = $bookingData['cinemaName'] ?? '';
+                if ($cinemaNameDisplay): ?>
+                <div class="detail-row">
+                    <strong>Cinema:</strong>
+                    <span><?= htmlspecialchars($cinemaNameDisplay) ?></span>
+                </div>
+                <?php endif; ?>
                 <div class="detail-row">
                     <strong>Show Date:</strong>
                     <span><?= date('F d, Y', strtotime($showDate)) ?></span>
@@ -316,6 +332,12 @@ $grandTotal = $seatTotal + $foodTotal - $pwdDiscount;
             <div class="price-row" style="color:#8ec98e;">
                 <span>PWD Discount (20% off seats):</span>
                 <span>- ₱<?= number_format($pwdDiscount, 2) ?></span>
+            </div>
+            <?php endif; ?>
+            <?php if ($seniorApproved): ?>
+            <div class="price-row" style="color:#8ec98e;">
+                <span>Senior Citizen Discount (20% off seats):</span>
+                <span>- ₱<?= number_format($seniorDiscount, 2) ?></span>
             </div>
             <?php endif; ?>
             <div class="price-row total">

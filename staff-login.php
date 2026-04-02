@@ -3,7 +3,7 @@ session_start();
 require_once 'config.php';
 
 // Already logged in as staff
-if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] && isset($_SESSION['role']) && in_array($_SESSION['role'], ['staff', 'admin'])) {
+if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] && isset($_SESSION['role']) && in_array($_SESSION['role'], ['staff', 'mall_admin'])) {
     header("Location: staff/dashboard.php");
     exit();
 }
@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($result && $result->num_rows > 0) {
             $row = $result->fetch_assoc();
 
-            if (!in_array($row['role'] ?? 'user', ['staff', 'admin'])) {
+            if (!in_array($row['role'] ?? 'user', ['staff', 'mall_admin'])) {
                 $error_message = "Access denied. This portal is for staff only.";
             } elseif (!password_verify($password, $row['user_password'])) {
                 $error_message = "Invalid password.";

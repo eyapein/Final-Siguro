@@ -59,64 +59,27 @@ $has_carousel_image = $carousel_check && $carousel_check->num_rows > 0;
 $trailer_check = $conn->query("SHOW COLUMNS FROM MOVIE LIKE 'trailer_youtube_id'");
 $has_trailer_youtube_id = $trailer_check && $trailer_check->num_rows > 0;
 
-// Fetch Now Showing movies
+// Check if CINEMA_MOVIE_ASSIGNMENT table exists
+$cinemaAssignCheck = $conn->query("SHOW TABLES LIKE 'CINEMA_MOVIE_ASSIGNMENT'");
+$hasCinemaAssignments = $cinemaAssignCheck && $cinemaAssignCheck->num_rows > 0;
+
+// Fetch Now Showing movies — ONLY movies assigned to a cinema number by a Mall Admin
+$nowShowingMovies = [];
 $trailer_select = $has_trailer_youtube_id ? ", m.trailer_youtube_id" : "";
-$trailer_group  = $has_trailer_youtube_id ? ", m.trailer_youtube_id" : "";
-if ($has_now_showing) {
-    $carousel_select = $has_carousel_image ? ", m.carousel_image" : "";
-    $carousel_group  = $has_carousel_image ? ", m.carousel_image" : "";
-    $nowShowingQuery = $conn->query("
-        SELECT DISTINCT m.movie_show_id, m.title, m.genre, m.duration, m.rating, m.movie_descrp, m.image_poster{$carousel_select}, m.delete_at, m.now_showing, m.coming_soon{$trailer_select}
-        FROM MOVIE m
-        LEFT JOIN MOVIE_SCHEDULE ms ON m.movie_show_id = ms.movie_show_id
-        WHERE (m.coming_soon = FALSE OR m.coming_soon IS NULL)
-        AND (m.now_showing = TRUE OR (ms.show_date >= '$today' AND ms.show_date IS NOT NULL))
-        GROUP BY m.movie_show_id, m.title, m.genre, m.duration, m.rating, m.movie_descrp, m.image_poster{$carousel_group}, m.now_showing, m.coming_soon{$trailer_group}
-        ORDER BY m.title ASC
-        LIMIT 10
-    ");
-} else {
-    $carousel_select = $has_carousel_image ? ", m.carousel_image" : "";
-    $carousel_group  = $has_carousel_image ? ", m.carousel_image" : "";
+$carousel_select = $has_carousel_image ? ", m.carousel_image" : "";
+
+if ($hasCinemaAssignments) {
+    // Only show movies that have been assigned to at least one cinema number
     $nowShowingQuery = $conn->query("
         SELECT DISTINCT m.movie_show_id, m.title, m.genre, m.duration, m.rating, m.movie_descrp, m.image_poster{$carousel_select}, m.delete_at{$trailer_select}
         FROM MOVIE m
-        INNER JOIN MOVIE_SCHEDULE ms ON m.movie_show_id = ms.movie_show_id
-        WHERE ms.show_date >= '$today'
-        GROUP BY m.movie_show_id, m.title, m.genre, m.duration, m.rating, m.movie_descrp, m.image_poster{$carousel_group}{$trailer_group}
+        INNER JOIN CINEMA_MOVIE_ASSIGNMENT cma ON m.movie_show_id = cma.movie_show_id
+        WHERE (m.is_deleted = 0 OR m.is_deleted IS NULL)
         ORDER BY m.title ASC
         LIMIT 10
     ");
-}
-
-$nowShowingMovies = [];
-if ($nowShowingQuery) {
-    while ($row = $nowShowingQuery->fetch_assoc()) {
-        $nowShowingMovies[] = $row;
-    }
-}
-
-// If no movies found and now_showing column exists, show all movies marked as now_showing (excluding coming_soon)
-if (empty($nowShowingMovies) && $has_now_showing) {
-    $carousel_select_fallback = $has_carousel_image ? ", carousel_image" : "";
-    $fallbackQuery = $conn->query("SELECT movie_show_id, title, genre, duration, rating, movie_descrp, image_poster{$carousel_select_fallback}, delete_at, now_showing, coming_soon FROM MOVIE WHERE now_showing = TRUE AND (coming_soon = FALSE OR coming_soon IS NULL) ORDER BY title ASC LIMIT 10");
-    if ($fallbackQuery) {
-        while ($row = $fallbackQuery->fetch_assoc()) {
-            $nowShowingMovies[] = $row;
-        }
-    }
-}
-
-// Final fallback: if still no movies, show all movies EXCEPT coming_soon (for testing - remove in production)
-if (empty($nowShowingMovies)) {
-    $carousel_select_fallback = $has_carousel_image ? ", carousel_image" : "";
-    if ($has_now_showing) {
-      $allMoviesQuery = $conn->query("SELECT movie_show_id, title, genre, duration, rating, movie_descrp, image_poster{$carousel_select_fallback}, delete_at, now_showing, coming_soon FROM MOVIE WHERE (coming_soon = FALSE OR coming_soon IS NULL) ORDER BY title ASC LIMIT 10");
-    } else {
-      $allMoviesQuery = $conn->query("SELECT movie_show_id, title, genre, duration, rating, movie_descrp, image_poster{$carousel_select_fallback}, delete_at FROM MOVIE ORDER BY title ASC LIMIT 10");
-    }
-    if ($allMoviesQuery) {
-        while ($row = $allMoviesQuery->fetch_assoc()) {
+    if ($nowShowingQuery) {
+        while ($row = $nowShowingQuery->fetch_assoc()) {
             $nowShowingMovies[] = $row;
         }
     }
@@ -180,6 +143,8 @@ $conn->close();
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ticketix</title>
   <link rel="icon" type="image/png" href="images/brand x.png" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="stylesheet" href="css/style.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="css/ticketix-main.css?v=<?php echo time(); ?>">
 </head>
@@ -192,9 +157,9 @@ $conn->close();
       $bannerHomeUserId = $_SESSION['user_id'] ?? $_SESSION['acc_id'] ?? null;
       if ($bannerHomeUserId) {
           $conn = getDBConnection();
-          $bannerHomeTbl = $conn->query("SHOW TABLES LIKE 'PWD_APPLICATIONS'");
+          $bannerHomeTbl = $conn->query("SHOW TABLES LIKE 'DISCOUNT_APPLICATIONS'");
           if ($bannerHomeTbl && $bannerHomeTbl->num_rows > 0) {
-              $bhStmt = $conn->prepare("SELECT status FROM PWD_APPLICATIONS WHERE acc_id = ? ORDER BY submitted_at DESC LIMIT 1");
+              $bhStmt = $conn->prepare("SELECT status FROM DISCOUNT_APPLICATIONS WHERE acc_id = ? AND discount_type = 'pwd' ORDER BY submitted_at DESC LIMIT 1");
               $bhStmt->bind_param("i", $bannerHomeUserId);
               $bhStmt->execute();
               $bhRow = $bhStmt->get_result()->fetch_assoc();
@@ -264,24 +229,32 @@ $conn->close();
   <header>
   <div class="left-section">
     <div class="logo">
-      <img src="images/brand x.png" alt="images/Ticketix Logo">
+      <img src="images/brand x.png" alt="Ticketix Logo">
     </div>
 
-    <nav>
+    <!-- Hamburger button (visible on mobile only) -->
+    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Toggle Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav id="mainNav">
       <a href="#home" class="active">Home</a>
       <a href="#now-showing">Now Showing</a>
       <a href="#coming-soon">Coming Soon</a>
       <a href="#contact">Contact Us</a>
     </nav>
 
-      
-      <form class="nav-search-form" method="GET" action="search.php">
+    <form class="nav-search-form" id="navSearchForm" method="GET" action="search.php">
       <label for="nav-search" class="nav-search-label">Search Movies:</label>
-        <input type="text" id="nav-search" name="q" placeholder="Search..." class="nav-search-input" required>
-        <button type="submit" class="nav-search-btn">🔍</button>
+      <input type="text" id="nav-search" name="q" placeholder="Search..." class="nav-search-input" required>
+      <button type="submit" class="nav-search-btn">🔍</button>
     </form>
-    </nav>
   </div>
+
+  <!-- Mobile nav overlay -->
+  <div class="nav-overlay" id="navOverlay" onclick="closeMobileMenu()"></div>
 
   <div class="right-section">
     <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']): ?>
@@ -1302,6 +1275,66 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+});
+
+// ── Hamburger Menu Toggle ──────────────────────────────────────
+function toggleMobileMenu() {
+  const hamburger = document.getElementById('hamburgerBtn');
+  const nav = document.getElementById('mainNav');
+  const searchForm = document.getElementById('navSearchForm');
+  const rightSection = document.querySelector('.right-section');
+  const overlay = document.getElementById('navOverlay');
+
+  const isOpen = nav.classList.contains('mobile-open');
+
+  if (isOpen) {
+    closeMobileMenu();
+  } else {
+    hamburger.classList.add('active');
+    nav.classList.add('mobile-open');
+    searchForm.classList.add('mobile-open');
+    if (rightSection) rightSection.classList.add('mobile-open');
+    overlay.classList.add('active');
+  }
+}
+
+function closeMobileMenu() {
+  const hamburger = document.getElementById('hamburgerBtn');
+  const nav = document.getElementById('mainNav');
+  const searchForm = document.getElementById('navSearchForm');
+  const rightSection = document.querySelector('.right-section');
+  const overlay = document.getElementById('navOverlay');
+
+  hamburger.classList.remove('active');
+  nav.classList.remove('mobile-open');
+  searchForm.classList.remove('mobile-open');
+  if (rightSection) rightSection.classList.remove('mobile-open');
+  overlay.classList.remove('active');
+}
+
+// Close mobile menu when a nav link is clicked, then scroll after menu collapses
+document.querySelectorAll('#mainNav a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
+      closeMobileMenu();
+      // Wait for menu to collapse, then scroll to the correct section
+      setTimeout(() => {
+        const targetEl = document.querySelector(targetId);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 300);
+    }
+  });
+});
+
+// Close mobile menu on window resize to desktop
+window.addEventListener('resize', function() {
+  if (window.innerWidth > 768) {
+    closeMobileMenu();
+  }
 });
 
 </script>

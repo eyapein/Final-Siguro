@@ -6,8 +6,8 @@ $conn = getDBConnection();
 
 $timings = ["10:30 AM", "12:30 PM", "3:00 PM", "05:30 PM", "06:30 PM", "08:30 PM", "9:30 PM", "10:30 PM"];
 $selectedTime = $_GET['time'] ?? '10:30 AM'; // get selected time or default
-$todayDate = date('Y-m-d');
-$maxSelectableDate = date('Y-m-d', strtotime('+30 days'));
+$todayDate = (new DateTime('now', new DateTimeZone('Asia/Manila')))->format('Y-m-d');
+$maxSelectableDate = (new DateTime($todayDate, new DateTimeZone('Asia/Manila')))->modify('+30 days')->format('Y-m-d');
 $selectedDate = $_GET['date'] ?? $todayDate;
 if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $selectedDate)) {
     $selectedDate = $todayDate;
@@ -70,6 +70,23 @@ if ($branchName) {
     $stmt->close();
 }
 
+// Get cinema type and price from cinema_id parameter
+$cinemaId = isset($_GET['cinema_id']) ? intval($_GET['cinema_id']) : null;
+$cinemaName = '';
+$cinemaPrice = 350; // default
+
+if ($cinemaId) {
+    $cinemaStmt = $conn->prepare("SELECT cinema_name, price FROM CINEMA_NUMBER WHERE cinema_number_id = ? LIMIT 1");
+    $cinemaStmt->bind_param('i', $cinemaId);
+    $cinemaStmt->execute();
+    $cinemaRow = $cinemaStmt->get_result()->fetch_assoc();
+    if ($cinemaRow) {
+        $cinemaName = $cinemaRow['cinema_name'];
+        $cinemaPrice = floatval($cinemaRow['price']);
+    }
+    $cinemaStmt->close();
+}
+
 // Check if MOVIE_SCHEDULE has branch_id column
 $branchIdColumnCheck = $conn->query("SHOW COLUMNS FROM MOVIE_SCHEDULE LIKE 'branch_id'");
 $movieScheduleHasBranchId = $branchIdColumnCheck && $branchIdColumnCheck->num_rows > 0;
@@ -119,20 +136,20 @@ if ($movie && $selectedTime) {
             // Show seats from ALL bookings (pending, approved) - exclude only declined
             // This ensures seats are blocked immediately after booking, not just after approval
             $seatStmt = $conn->prepare("
-                SELECT DISTINCT s.seat_number
+                SELECT DISTINCT rs.seat_number
                 FROM RESERVE r
                 JOIN RESERVE_SEAT rs ON r.reservation_id = rs.reservation_id
-                JOIN SEAT s ON rs.seat_id = s.seat_id
+                -- seat_number now in RESERVE_SEAT
                 WHERE r.schedule_id = ? 
                 AND (r.booking_status IS NULL OR r.booking_status = 'pending' OR r.booking_status = 'approved')
             ");
         } else {
             // If booking_status column doesn't exist, show all booked seats
             $seatStmt = $conn->prepare("
-                SELECT DISTINCT s.seat_number
+                SELECT DISTINCT rs.seat_number
                 FROM RESERVE r
                 JOIN RESERVE_SEAT rs ON r.reservation_id = rs.reservation_id
-                JOIN SEAT s ON rs.seat_id = s.seat_id
+                -- seat_number now in RESERVE_SEAT
                 WHERE r.schedule_id = ?
             ");
         }
@@ -153,9 +170,9 @@ $showPwdBanner = false;
 if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
     $bannerUserId = $_SESSION['user_id'] ?? $_SESSION['acc_id'] ?? null;
     if ($bannerUserId) {
-        $bannerCheck = $conn->query("SHOW TABLES LIKE 'PWD_APPLICATIONS'");
+        $bannerCheck = $conn->query("SHOW TABLES LIKE 'DISCOUNT_APPLICATIONS'");
         if ($bannerCheck && $bannerCheck->num_rows > 0) {
-            $bannerStmt = $conn->prepare("SELECT status FROM PWD_APPLICATIONS WHERE acc_id = ? ORDER BY submitted_at DESC LIMIT 1");
+            $bannerStmt = $conn->prepare("SELECT status FROM DISCOUNT_APPLICATIONS WHERE acc_id = ? AND discount_type = 'pwd' ORDER BY submitted_at DESC LIMIT 1");
             $bannerStmt->bind_param("i", $bannerUserId);
             $bannerStmt->execute();
             $bannerRow = $bannerStmt->get_result()->fetch_assoc();
@@ -335,38 +352,68 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
         <!-- Seat Selection -->
         <main class="seat-selection">
             <h1>Select Your Seat</h1>
+            <?php if ($cinemaName): ?>
+            <div style="text-align:center; margin-bottom:10px; color:#00BFFF; font-size:0.95rem; font-weight:600;">
+                <?= htmlspecialchars($cinemaName) ?> — ₱<?= number_format($cinemaPrice, 0) ?>/seat
+            </div>
+            <?php endif; ?>
             <div class="screen"></div>
 
             <div class="seats-wrapper">
                 <?php
-                // --- DATABASE-DRIVEN SEAT LOGIC START ---
-                $rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+                // --- DYNAMIC SEAT LAYOUT PER CINEMA TYPE ---
+                // Define seat layouts based on cinema type
+                $cinemaCapacity = 100; // default
+                $seatsPerRow = 10;
+                $numRows = 10;
 
-                foreach ($rows as $row):
-                    echo '<div class="row"><div class="row-label">' . $row . '</div>';
-                    $totalSeats = 18;
-                    for ($i = 1; $i <= $totalSeats; $i++):
-                        if (($row === 'A' || $row === 'B') && $i > 9) {
-                            if ($i == 10) echo '<div class="seat-gap"></div>';
-                            continue;
+                if ($cinemaName) {
+                    switch ($cinemaName) {
+                        case "Director's Club":
+                            $cinemaCapacity = 50;
+                            $seatsPerRow = 10;
+                            $numRows = 5;  // 5 × 10 = 50
+                            break;
+                        case 'IMAX':
+                            $cinemaCapacity = 150;
+                            $seatsPerRow = 15;
+                            $numRows = 10; // 10 × 15 = 150
+                            break;
+                        case 'Regular':
+                        default:
+                            $cinemaCapacity = 120;
+                            $seatsPerRow = 15;
+                            $numRows = 8;  // 8 × 15 = 120
+                            break;
+                    }
+                } else {
+                    // Fallback when no cinema selected (use Regular layout)
+                    $seatsPerRow = 15;
+                    $numRows = 8;
+                }
+
+                $rowLetters = range('A', 'Z');
+                $aisleAfter = intval($seatsPerRow / 2); // center aisle
+
+                for ($r = 0; $r < $numRows; $r++):
+                    $rowLetter = $rowLetters[$r];
+                    echo '<div class="row"><div class="row-label">' . $rowLetter . '</div>';
+
+                    for ($i = 1; $i <= $seatsPerRow; $i++):
+                        // Add center aisle gap
+                        if ($i == $aisleAfter + 1) {
+                            echo '<div class="seat-gap"></div>';
                         }
-                        if ($i == 10) echo '<div class="seat-gap"></div>';
 
-                        // Check if seat is booked from database
-                        // Seat numbers are stored as "A-1", "B-2" format in database
-                        $seatNumber = $row . '-' . $i;
-                        // Also check without dash in case seats were stored in different format
-                        $seatNumberAlt = $row . $i;
+                        $seatNumber = $rowLetter . '-' . $i;
+                        $seatNumberAlt = $rowLetter . $i;
                         $isBooked = in_array($seatNumber, $bookedSeats) || in_array($seatNumberAlt, $bookedSeats);
-                        $isSelected = false; // User selection happens via JavaScript
 
                         $classes = "seat";
-                        if ($isSelected) $classes .= " selected";
                         if ($isBooked) $classes .= " booked";
 
                         $disabled = $isBooked ? "aria-disabled='true' tabindex='-1'" : "tabindex='0' role='checkbox' aria-checked='false'";
-                        // Use format "A-1" to match database storage
-                        $dataAttr = "data-seat='$row-$i'";
+                        $dataAttr = "data-seat='$rowLetter-$i'";
 
                         echo "<div class='seat-container'>";
                         echo "<div class='$classes' $disabled $dataAttr></div>";
@@ -374,8 +421,8 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
                         echo "</div>";
                     endfor;
                     echo '</div>';
-                endforeach;
-                // --- DATABASE-DRIVEN SEAT LOGIC END ---
+                endfor;
+                // --- END DYNAMIC SEAT LAYOUT ---
                 ?>
             </div>
 
@@ -386,7 +433,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
 
         <!-- Right Movie Info Panel -->
         <aside class="movie-info">
-            <h3><?= $displayBranchName ?></h3>
+            <h3><?= $cinemaName ? htmlspecialchars($cinemaName) . ' — ' : '' ?><?= $displayBranchName ?></h3>
             <div class="movie-poster">
                 <img src="<?= $moviePoster ?>" alt="<?= $displayMovieTitle ?> Poster" onerror="this.src='images/default.png'">
             </div>
@@ -468,8 +515,11 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
         // Returns true if the given time string (e.g. "10:30 AM") is within 20 min
         // of the current moment, OR already in the past, on today's date.
         function isTimingClosed(timeStr) {
-            const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-            if (selectedDate !== today) return false; // future dates are always open
+            // Derive today's date in Philippine Standard Time (not UTC)
+            const manilaDate = new Intl.DateTimeFormat('en-CA', {
+                timeZone: 'Asia/Manila', year: 'numeric', month: '2-digit', day: '2-digit'
+            }).format(new Date()); // returns YYYY-MM-DD in PH time
+            if (selectedDate !== manilaDate) return false; // future dates are always open
 
             // Parse the show time
             const match = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
@@ -667,11 +717,10 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
             // Calculate dynamic seat prices using the POV logic
             const selectedSeatNumbers = [...selectedSeats];
             const seatsData = selectedSeatNumbers.map(seatId => {
-                // Flat price for all seats - no tier pricing
                 return {
                     id: seatId,
-                    tier: 'Standard',
-                    price: 350
+                    tier: '<?= addslashes($cinemaName ?: "Standard") ?>',
+                    price: <?= $cinemaPrice ?>
                 };
             });
 
@@ -694,6 +743,8 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
                 time: selectedTiming,
                 seats: selectedSeatNumbers,
                 seatsData: seatsData,
+                cinemaId: <?= $cinemaId ? $cinemaId : 'null' ?>,
+                cinemaName: '<?= addslashes($cinemaName) ?>',
                 food: foodData,
                 foodTotal: foodTotal
             };

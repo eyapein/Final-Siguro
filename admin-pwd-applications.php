@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'mall_admin') {
     header("Location: login.php");
     exit();
 }
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pwdApproved = ($action === 'approve') ? 1 : 0;
 
         // Get acc_id from application
-        $appStmt = $conn->prepare("SELECT acc_id FROM PWD_APPLICATIONS WHERE pwd_app_id = ?");
+        $appStmt = $conn->prepare("SELECT acc_id FROM DISCOUNT_APPLICATIONS WHERE app_id = ?");
         $appStmt->bind_param("i", $appId);
         $appStmt->execute();
         $appRow = $appStmt->get_result()->fetch_assoc();
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $accId = $appRow['acc_id'];
 
             // Update application
-            $updStmt = $conn->prepare("UPDATE PWD_APPLICATIONS SET status = ?, admin_notes = ?, reviewed_at = NOW() WHERE pwd_app_id = ?");
+            $updStmt = $conn->prepare("UPDATE DISCOUNT_APPLICATIONS SET status = ?, admin_notes = ?, reviewed_at = NOW() WHERE app_id = ?");
             $updStmt->bind_param("ssi", $newStatus, $note, $appId);
             $updStmt->execute();
             $updStmt->close();
@@ -57,18 +57,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Fetch all applications
 $applications = [];
-$tableCheck = $conn->query("SHOW TABLES LIKE 'PWD_APPLICATIONS'");
-if ($tableCheck && $tableCheck->num_rows > 0) {
-    $res = $conn->query("
-        SELECT p.*, u.firstName, u.lastName, u.email
-        FROM PWD_APPLICATIONS p
-        JOIN USER_ACCOUNT u ON p.acc_id = u.acc_id
-        ORDER BY FIELD(p.status, 'pending', 'rejected', 'approved'), p.submitted_at DESC
-    ");
-    if ($res) {
-        while ($row = $res->fetch_assoc()) {
-            $applications[] = $row;
-        }
+$res = $conn->query("
+    SELECT p.*, p.app_id AS pwd_app_id, p.id_number AS pwd_id_number, p.id_image AS pwd_id_image, u.firstName, u.lastName, u.email
+    FROM DISCOUNT_APPLICATIONS p
+    JOIN USER_ACCOUNT u ON p.acc_id = u.acc_id
+    WHERE p.discount_type = 'pwd'
+    ORDER BY FIELD(p.status, 'pending', 'rejected', 'approved'), p.submitted_at DESC
+");
+if ($res) {
+    while ($row = $res->fetch_assoc()) {
+        $applications[] = $row;
     }
 }
 
@@ -247,7 +245,7 @@ $conn->close();
     <aside class="sidebar">
         <div class="profile-section">
             <img src="images/brand x.png" alt="Profile Picture" class="profile-pic clickable-logo" onclick="toggleLogout()" style="cursor:pointer;" />
-            <h2>Admin</h2>
+            <h2>Mall Admin</h2>
         </div>
         <nav class="sidebar-nav">
             <a href="admin-panel.php">Dashboard</a>
@@ -255,12 +253,14 @@ $conn->close();
             <a href="view-shows.php">List Shows</a>
             <a href="view-bookings.php">List Bookings</a>
             <a href="view-deleted-movies.php">Deleted Movies</a>
+            <a href="mall-admin/assign-movie.php">Assign Movies</a>
             <a href="admin-pwd-applications.php" class="active">
                 PWD Applications
                 <?php if ($pendingCount > 0): ?>
                     <span class="notif-badge"><?= $pendingCount ?></span>
                 <?php endif; ?>
             </a>
+            <a href="admin-senior-applications.php">Senior Applications</a>
         </nav>
         <div class="sidebar-footer">
             <a href="logout.php" class="logout-btn" id="logoutBtn" style="display:none;">Logout</a>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'mall_admin') {
     header("Location: login.php");
     exit();
 }
@@ -109,7 +109,7 @@ if ($deletedMoviesQuery) {
     <aside class="sidebar">
         <div class="profile-section">
             <img src="images/brand x.png" alt="Profile Picture" class="profile-pic clickable-logo" onclick="toggleLogout()" style="cursor: pointer;" />
-            <h2>Admin</h2>
+            <h2>Mall Admin</h2>
         </div>
         <nav class="sidebar-nav">
             <a href="admin-panel.php">Dashboard</a>
@@ -117,6 +117,7 @@ if ($deletedMoviesQuery) {
             <a href="view-shows.php">List Shows</a>
             <a href="view-bookings.php">List Bookings</a>
             <a href="view-deleted-movies.php" class="active">Deleted Movies</a>
+            <a href="mall-admin/assign-movie.php">Assign Movies</a>
         </nav>
         <div class="sidebar-footer">
             <a href="logout.php" class="logout-btn" id="logoutBtn" style="display: none;">➜ Logout</a>

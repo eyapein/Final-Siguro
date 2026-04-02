@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply_pwd_discount'])
             $messageType = 'error';
         } else {
             // Check existing application
-            $chkStmt = $conn->prepare("SELECT pwd_app_id, status FROM PWD_APPLICATIONS WHERE acc_id = ? ORDER BY submitted_at DESC LIMIT 1");
+            $chkStmt = $conn->prepare("SELECT app_id, status FROM DISCOUNT_APPLICATIONS WHERE acc_id = ? AND discount_type = 'pwd' ORDER BY submitted_at DESC LIMIT 1");
             $chkStmt->bind_param("i", $userId);
             $chkStmt->execute();
             $chkResult = $chkStmt->get_result();
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply_pwd_discount'])
                 if (move_uploaded_file($file['tmp_name'], $filePath)) {
                     $relPath = 'uploads/pwd_ids/' . $fileName;
                     // Insert application
-                    $ins = $conn->prepare("INSERT INTO PWD_APPLICATIONS (acc_id, pwd_id_number, pwd_id_image, status) VALUES (?, ?, ?, 'pending')");
+                    $ins = $conn->prepare("INSERT INTO DISCOUNT_APPLICATIONS (acc_id, discount_type, id_number, id_image, status) VALUES (?, 'pwd', ?, ?, 'pending')");
                     $ins->bind_param("iss", $userId, $pwdIdNumber, $relPath);
                     if ($ins->execute()) {
                         $newAppId = $conn->insert_id;
@@ -77,6 +77,94 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply_pwd_discount'])
                 } else {
                     $message = 'Failed to upload image. Please try again.';
                     $messageType = 'error';
+                }
+            }
+        }
+    }
+}
+
+// Handle Senior Citizen discount application
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply_senior_discount'])) {
+    $userId = $_SESSION['user_id'] ?? $_SESSION['acc_id'] ?? null;
+    $seniorIdNumber = trim($_POST['senior_id_number'] ?? '');
+    $seniorAgreement = isset($_POST['senior_agreement']) ? 1 : 0;
+
+    if (!$seniorAgreement) {
+        $message = 'You must agree to the terms before submitting.';
+        $messageType = 'error';
+    } elseif (empty($seniorIdNumber)) {
+        $message = 'Senior Citizen ID number is required.';
+        $messageType = 'error';
+    } elseif (!isset($_FILES['senior_id_image']) || $_FILES['senior_id_image']['error'] !== UPLOAD_ERR_OK) {
+        $message = 'Please upload your Senior Citizen ID image.';
+        $messageType = 'error';
+    } else {
+        // Check if PWD is already approved (can't have both)
+        $pwdCheckStmt = $conn->prepare("SELECT pwd_approved FROM USER_ACCOUNT WHERE acc_id = ?");
+        $pwdCheckStmt->bind_param("i", $userId);
+        $pwdCheckStmt->execute();
+        $pwdCheckRow = $pwdCheckStmt->get_result()->fetch_assoc();
+        $pwdCheckStmt->close();
+
+        if ($pwdCheckRow && !empty($pwdCheckRow['pwd_approved'])) {
+            $message = 'You already have an approved PWD discount. You cannot have both PWD and Senior discounts.';
+            $messageType = 'error';
+        } else {
+            $file = $_FILES['senior_id_image'];
+            $allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+            $allowedExts  = ['png', 'jpg', 'jpeg'];
+            $fileExt = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            $fileMime = mime_content_type($file['tmp_name']);
+
+            if (!in_array($fileMime, $allowedTypes) || !in_array($fileExt, $allowedExts)) {
+                $message = 'Only PNG, JPG, and JPEG images are allowed.';
+                $messageType = 'error';
+            } elseif ($file['size'] > 5 * 1024 * 1024) {
+                $message = 'Image file must be 5MB or less.';
+                $messageType = 'error';
+            } else {
+                $chkStmt = $conn->prepare("SELECT app_id, status FROM DISCOUNT_APPLICATIONS WHERE acc_id = ? AND discount_type = 'senior' ORDER BY submitted_at DESC LIMIT 1");
+                $chkStmt->bind_param("i", $userId);
+                $chkStmt->execute();
+                $existingApp = $chkStmt->get_result()->fetch_assoc();
+                $chkStmt->close();
+
+                if ($existingApp && in_array($existingApp['status'], ['pending', 'approved'])) {
+                    $message = 'You already have a ' . $existingApp['status'] . ' Senior Citizen application.';
+                    $messageType = 'error';
+                } else {
+                    $uploadDir = __DIR__ . '/uploads/senior_ids/';
+                    if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+                    $fileName  = 'senior_' . $userId . '_' . time() . '.' . $fileExt;
+                    $filePath  = $uploadDir . $fileName;
+                    if (move_uploaded_file($file['tmp_name'], $filePath)) {
+                        $relPath = 'uploads/senior_ids/' . $fileName;
+                        $ins = $conn->prepare("INSERT INTO DISCOUNT_APPLICATIONS (acc_id, discount_type, id_number, id_image, status) VALUES (?, 'senior', ?, ?, 'pending')");
+                        $ins->bind_param("iss", $userId, $seniorIdNumber, $relPath);
+                        if ($ins->execute()) {
+                            $newAppId = $conn->insert_id;
+                            $ins->close();
+                            $uStmt = $conn->prepare("SELECT firstName, lastName FROM USER_ACCOUNT WHERE acc_id = ?");
+                            $uStmt->bind_param("i", $userId);
+                            $uStmt->execute();
+                            $uRow = $uStmt->get_result()->fetch_assoc();
+                            $uStmt->close();
+                            $userName = trim(($uRow['firstName'] ?? '') . ' ' . ($uRow['lastName'] ?? ''));
+                            $notifMsg = "User $userName has submitted a Senior Citizen discount application. Senior ID: $seniorIdNumber";
+                            $nStmt = $conn->prepare("INSERT INTO ADMIN_NOTIFICATIONS (type, message, reference_id) VALUES ('senior_application', ?, ?)");
+                            $nStmt->bind_param("si", $notifMsg, $newAppId);
+                            $nStmt->execute();
+                            $nStmt->close();
+                            $message = 'Your Senior Citizen discount application has been submitted and is under review.';
+                            $messageType = 'success';
+                        } else {
+                            $message = 'Error submitting application: ' . $conn->error;
+                            $messageType = 'error';
+                        }
+                    } else {
+                        $message = 'Failed to upload image. Please try again.';
+                        $messageType = 'error';
+                    }
                 }
             }
         }
@@ -269,14 +357,19 @@ $stmt->close();
 
 // Get PWD application status
 $pwdApp = null;
-$tableCheckPwd = $conn->query("SHOW TABLES LIKE 'PWD_APPLICATIONS'");
-if ($tableCheckPwd && $tableCheckPwd->num_rows > 0) {
-    $pStmt = $conn->prepare("SELECT * FROM PWD_APPLICATIONS WHERE acc_id = ? ORDER BY submitted_at DESC LIMIT 1");
-    $pStmt->bind_param("i", $userId);
-    $pStmt->execute();
-    $pwdApp = $pStmt->get_result()->fetch_assoc();
-    $pStmt->close();
-}
+$pStmt = $conn->prepare("SELECT *, id_number AS pwd_id_number, id_image AS pwd_id_image FROM DISCOUNT_APPLICATIONS WHERE acc_id = ? AND discount_type = 'pwd' ORDER BY submitted_at DESC LIMIT 1");
+$pStmt->bind_param("i", $userId);
+$pStmt->execute();
+$pwdApp = $pStmt->get_result()->fetch_assoc();
+$pStmt->close();
+
+// Get Senior Citizen application status
+$seniorApp = null;
+$sStmt = $conn->prepare("SELECT *, id_number AS senior_id_number, id_image AS senior_id_image FROM DISCOUNT_APPLICATIONS WHERE acc_id = ? AND discount_type = 'senior' ORDER BY submitted_at DESC LIMIT 1");
+$sStmt->bind_param("i", $userId);
+$sStmt->execute();
+$seniorApp = $sStmt->get_result()->fetch_assoc();
+$sStmt->close();
 
 $conn->close();
 
@@ -545,6 +638,67 @@ $birthdateFormatted = $user['birthdate'] ? date('Y-m-d', strtotime($user['birthd
             (function(){
                 var cb = document.getElementById('pwd_agreement');
                 var btn = document.getElementById('pwdSubmitBtn');
+                if(cb && btn){
+                    cb.addEventListener('change', function(){ btn.disabled = !this.checked; });
+                }
+            })();
+            </script>
+            <?php endif; ?>
+        </div>
+
+        <!-- Senior Citizen Discount Application Section -->
+        <div class="pwd-section" id="senior">
+            <h2>Senior Citizen Discount Application</h2>
+            <p class="pwd-intro">Senior Citizens (60 years old and above) are entitled to a <strong>20% discount</strong> on seat prices. Submit your Senior Citizen ID below to apply.</p>
+
+            <?php if ($pwdApp && $pwdApp['status'] === 'approved'): ?>
+                <div class="pwd-status pending">
+                    You already have an <strong>approved PWD discount</strong>. You cannot combine PWD and Senior Citizen discounts.
+                </div>
+            <?php elseif ($seniorApp && $seniorApp['status'] === 'approved'): ?>
+                <div class="pwd-status approved">
+                    Your Senior Citizen discount (20% off seats) is <strong>active and approved</strong>. The discount will be automatically applied at checkout.
+                </div>
+            <?php elseif ($seniorApp && $seniorApp['status'] === 'pending'): ?>
+                <div class="pwd-status pending">
+                    Your Senior Citizen discount application is <strong>under review</strong>. You submitted Senior Citizen ID: <strong><?= htmlspecialchars($seniorApp['senior_id_number']) ?></strong>. Please wait for admin approval.
+                </div>
+            <?php elseif ($seniorApp && $seniorApp['status'] === 'rejected'): ?>
+                <div class="pwd-status rejected">
+                    Your previous Senior Citizen application was <strong>rejected</strong>.
+                    <?php if (!empty($seniorApp['admin_notes'])): ?>
+                        Reason: <?= htmlspecialchars($seniorApp['admin_notes']) ?>
+                    <?php endif; ?>
+                    You may re-apply below.
+                </div>
+            <?php endif; ?>
+
+            <?php if (!($pwdApp && $pwdApp['status'] === 'approved') && (!$seniorApp || $seniorApp['status'] === 'rejected')): ?>
+            <form method="POST" action="" enctype="multipart/form-data" class="pwd-form">
+                <div class="form-group">
+                    <label for="senior_id_number">Senior Citizen ID Number *</label>
+                    <input type="text" id="senior_id_number" name="senior_id_number" placeholder="Enter your Senior Citizen ID number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="senior_id_image">Upload Senior Citizen ID Image * (PNG, JPG, or JPEG only, max 5MB)</label>
+                    <input type="file" id="senior_id_image" name="senior_id_image" accept=".png,.jpg,.jpeg,image/png,image/jpeg" required>
+                    <small>Only PNG, JPG, and JPEG image files are accepted. The image must clearly show your Senior Citizen ID.</small>
+                </div>
+
+                <div class="form-group pwd-agreement">
+                    <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-weight:normal;">
+                        <input type="checkbox" name="senior_agreement" id="senior_agreement" style="width:auto;margin-top:3px;" required>
+                        <span>I certify that the information and Senior Citizen ID I am submitting is genuine and authentic. I understand that submitting false information may result in account suspension and revocation of the discount. By submitting, I give Ticketix permission to verify my Senior Citizen status.</span>
+                    </label>
+                </div>
+
+                <button type="submit" name="apply_senior_discount" class="btn btn-primary" id="seniorSubmitBtn" disabled>Submit Senior Citizen Application</button>
+            </form>
+            <script>
+            (function(){
+                var cb = document.getElementById('senior_agreement');
+                var btn = document.getElementById('seniorSubmitBtn');
                 if(cb && btn){
                     cb.addEventListener('change', function(){ btn.disabled = !this.checked; });
                 }

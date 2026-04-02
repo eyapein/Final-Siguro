@@ -165,6 +165,7 @@
 /* Smooth scrolling for the entire page */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 80px;
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -181,7 +182,7 @@ body {
   border-radius: 20px;
   margin: 15px 15px;
   position: relative;
-  overflow: hidden;
+  overflow: clip;
 }
 
 /* Dark semi-transparent overlay — background still visible */
@@ -1076,6 +1077,8 @@ section#home.hero *::after {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   animation: fadeIn ease;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .modal-content {
@@ -1397,12 +1400,65 @@ section#home.hero *::after {
     padding: 15px;
   }
 
+  /* ── Modal responsive ── */
+  .modal-content {
+    width: 92%;
+    margin: 3% auto;
+    padding: 20px 16px;
+    max-height: 90vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .movie-detail-modal {
+    width: 95%;
+    max-width: none;
+  }
+
   .movie-detail-content {
     grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .movie-poster img {
+    max-height: 250px;
+    width: auto;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .movie-details h2 {
+    font-size: 1.4em;
+  }
+
+  .movie-details p {
+    font-size: 0.95em;
+  }
+
+  .movie-description {
+    margin: 12px 0;
+    padding: 12px;
+    font-size: 0.9em;
   }
 
   .modal-actions {
     flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal-actions .action-btn,
+  .modal-actions .btn {
+    width: 100%;
+    text-align: center;
+    padding: 12px 16px;
+    font-size: 1em;
+  }
+
+  .close {
+    font-size: 24px;
+    top: 10px;
+    right: 14px;
+    z-index: 10;
   }
 
   .trailer-modal {
@@ -1412,6 +1468,37 @@ section#home.hero *::after {
 
   #youtubePlayer {
     padding-bottom: 56.25%;
+  }
+
+  /* ── Touch-friendly movie overlay ── */
+  .movie-overlay {
+    opacity: 1;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+    align-items: flex-end;
+  }
+
+  .movie-overlay .movie-info {
+    padding: 12px 10px;
+    width: 100%;
+  }
+
+  .movie-overlay .movie-info h3 {
+    font-size: 0.9em;
+    margin-bottom: 4px;
+  }
+
+  .movie-overlay .movie-info p {
+    font-size: 0.7em;
+    margin-bottom: 8px;
+  }
+
+  .movie-actions {
+    gap: 6px;
+  }
+
+  .movie-actions .action-btn {
+    font-size: 0.7em;
+    padding: 5px 8px;
   }
 
   /* Section-specific responsive styling */
@@ -1459,15 +1546,18 @@ section#home.hero *::after {
 
   /* Movie Grid Responsive - Now Showing uses same responsive design as Coming Soon */
   .movie-grid {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-    padding: 0 10px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 0 15px;
+    justify-items: center;
   }
 
   .movie {
-    max-width: 220px;
-    height: 330px;
-    min-width: 160px;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 3;
+    min-width: unset;
   }
 }
 
@@ -1569,15 +1659,18 @@ section#home.hero *::after {
   }
 
   .movie-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-    padding: 0 5px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 0 12px;
+    justify-items: center;
   }
 
   .movie {
-    max-width: 180px;
-    height: 270px;
-    min-width: 140px;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 3;
+    min-width: unset;
   }
 }
 
@@ -1631,15 +1724,18 @@ section#home.hero *::after {
   }
 
   .movie-grid {
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 8px;
-    padding: 0 5px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 0 10px;
+    justify-items: center;
   }
 
   .movie {
-    max-width: 150px;
-    height: 225px;
-    min-width: 120px;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 3;
+    min-width: unset;
   }
 
   .hero-content h1 {
@@ -1685,13 +1781,17 @@ section#home.hero *::after {
   }
 
   .movie-grid {
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-    gap: 6px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 0 8px;
+    justify-items: center;
   }
 
   .movie {
-    max-width: 130px;
-    height: 195px;
-    min-width: 100px;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 3;
+    min-width: unset;
   }
 }

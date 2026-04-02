@@ -24,7 +24,7 @@ $conn = getDBConnection();
 $msBranchCheck = $conn->query("SHOW COLUMNS FROM MOVIE_SCHEDULE LIKE 'branch_id'");
 $msHasBranch   = $msBranchCheck && $msBranchCheck->num_rows > 0;
 
-$paymentStatusCheck = $conn->query("SHOW COLUMNS FROM PAYMENT LIKE 'payment_status'");
+$paymentStatusCheck = $conn->query("SHOW COLUMNS FROM TICKET LIKE 'payment_status'");
 $has_payment_status = $paymentStatusCheck && $paymentStatusCheck->num_rows > 0;
 
 // Build ticket query
@@ -33,14 +33,14 @@ $ticketQuery = "
            r.reservation_id, r.reserve_date, r.ticket_amount, r.sum_price,
            m.title, m.image_poster,
            ms.show_date, ms.show_hour,
-           p.payment_type, p.amount_paid, p.reference_number
-           " . ($has_payment_status ? ", p.payment_status" : "") . "
+           t.payment_type, t.amount_paid, t.reference_number
+           " . ($has_payment_status ? ", t.payment_status" : "") . "
            " . ($msHasBranch ? ", b.branch_name" : "") . "
     FROM TICKET t
     JOIN RESERVE r ON t.reserve_id = r.reservation_id
     JOIN MOVIE_SCHEDULE ms ON r.schedule_id = ms.schedule_id
     JOIN MOVIE m ON ms.movie_show_id = m.movie_show_id
-    JOIN PAYMENT p ON t.payment_id = p.payment_id
+    -- payment columns now in TICKET
     " . ($msHasBranch ? "LEFT JOIN BRANCH b ON ms.branch_id = b.branch_id" : "") . "
     WHERE t.ticket_id = ? AND r.acc_id = ?
 ";
@@ -60,11 +60,11 @@ if (!$ticket) {
 
 // Get seats
 $seatStmt = $conn->prepare("
-    SELECT s.seat_number, s.seat_type
+    SELECT rs.seat_number, 'Regular' AS seat_type
     FROM RESERVE_SEAT rs
-    JOIN SEAT s ON rs.seat_id = s.seat_id
+    -- seat_number now in RESERVE_SEAT
     WHERE rs.reservation_id = ?
-    ORDER BY s.seat_number
+    ORDER BY rs.seat_number
 ");
 $seatStmt->bind_param("i", $ticket['reservation_id']);
 $seatStmt->execute();
@@ -219,7 +219,7 @@ $emailBody = '<!DOCTYPE html>
         <tr>
           <td style="background-color:#e50914;padding:12px 24px;">
             <p style="margin:0;color:#fff;font-size:16px;font-weight:700;">
-              &#127916; ' . htmlspecialchars($movieTitle, ENT_QUOTES, 'UTF-8') . '
+              ' . htmlspecialchars($movieTitle, ENT_QUOTES, 'UTF-8') . '
             </p>
           </td>
         </tr>
@@ -320,7 +320,7 @@ $emailBody = '<!DOCTYPE html>
             <div style="background:rgba(229,9,20,0.1);border:1px solid rgba(229,9,20,0.3);
                 border-radius:8px;padding:12px 16px;text-align:center;">
               <p style="margin:0;font-size:12px;color:#ff8080;">
-                &#128206; Your full e-ticket PDF is attached to this email. Download and save it for entry.
+                Your full e-ticket PDF is attached to this email. Download and save it for entry.
               </p>
             </div>
           </td>
