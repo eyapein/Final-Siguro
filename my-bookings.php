@@ -33,7 +33,7 @@ $query = "
            $bookingStatusSelect,
            m.title, m.image_poster,
            ms.show_date, ms.show_hour,
-           p.payment_type, p.amount_paid, p.payment_status, p.reference_number
+           t.payment_type, t.amount_paid, t.payment_status, t.reference_number
 ";
 
 $msBranchCheck = $conn->query("SHOW COLUMNS FROM MOVIE_SCHEDULE LIKE 'branch_id'");

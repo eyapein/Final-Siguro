@@ -1,6 +1,7 @@
-/* Mall Admin Panel Styles */
+/* ── Imports ─────────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
 
+/* ── Reset ───────────────────────────────────────────────────── */
 * {
     margin: 0;
     padding: 0;
@@ -8,97 +9,112 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-body, html {
+/* ── Base ────────────────────────────────────────────────────── */
+html, body {
     height: 100%;
     font-family: 'Montserrat', sans-serif;
 }
 
-/* Background - Teal/Dark theme to differentiate from Super Admin */
 body {
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    background:
+        radial-gradient(ellipse at 15% 15%, rgba(85, 138, 206, 0.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 85%, rgba(85, 138, 206, 0.04) 0%, transparent 55%),
+        #0b0b0b;
     color: #fff;
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
     font-weight: 400;
 }
 
-/* ===== Sidebar ===== */
+/* ═══════════════════════════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════════════════════════ */
 .sidebar {
-    background: #0a1628;
-    width: 260px;
+    background: rgba(8, 8, 16, 0.97);
+    width: 255px;
+    min-width: 255px;
     padding: 30px 20px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    box-shadow: 2px 0 12px rgba(0,0,0,0.3);
-    position: relative;
-    min-height: 100vh;
+    gap: 28px;
+    border-right: 1px solid rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    z-index: 100;
+    overflow-y: auto;
 }
 
+/* Profile */
 .profile-section {
     text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .profile-pic {
-    width: 80px;
-    height: 80px;
+    width: 76px;
+    height: 76px;
     border-radius: 50%;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     object-fit: cover;
-    border: 3px solid #00b4d8;
+    border: 2px solid rgba(85, 138, 206, 0.45);
+    box-shadow: 0 0 20px rgba(85, 138, 206, 0.18);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .profile-pic.clickable-logo:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 16px rgba(0, 180, 216, 0.5);
+    transform: scale(1.08);
+    box-shadow: 0 0 28px rgba(85, 138, 206, 0.4);
     cursor: pointer;
 }
 
 .profile-section h2 {
     font-weight: 600;
-    color: #fff;
-    font-size: 16px;
+    font-size: 0.9rem;
+    color: #e0e0e0;
+    letter-spacing: 0.4px;
 }
 
 .profile-section .branch-label {
     font-weight: 400;
-    color: #00b4d8;
-    font-size: 12px;
+    color: #558ace;
+    font-size: 0.75rem;
     margin-top: 4px;
     letter-spacing: 0.5px;
 }
 
-/* Sidebar navigation links */
+/* Nav links */
 .sidebar-nav {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
     flex-grow: 1;
 }
 
 .sidebar-nav a {
-    color: #8eafc0;
+    color: #8a8aaa;
     text-decoration: none;
     font-weight: 500;
-    padding: 10px 15px;
+    font-size: 0.88rem;
+    padding: 10px 14px;
     border-radius: 8px;
-    transition: all 0.3s ease;
-    font-size: 14px;
+    border: 1px solid transparent;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 
 .sidebar-nav a:hover,
 .sidebar-nav a.active {
-    background: linear-gradient(135deg, rgba(0,180,216,0.2), rgba(0,180,216,0.05));
+    background: rgba(85, 138, 206, 0.13);
     color: #fff;
-    border-left: 3px solid #00b4d8;
+    border-color: rgba(85, 138, 206, 0.22);
 }
 
 /* Sidebar footer */
 .sidebar-footer {
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    min-height: 60px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
     display: flex;
     align-items: flex-start;
 }
@@ -106,122 +122,320 @@ body {
 .logout-btn {
     display: block;
     width: 100%;
-    color: #ff6b6b;
+    color: #ff7a7a;
     text-decoration: none;
     font-weight: 500;
-    padding: 12px 15px;
+    font-size: 0.88rem;
+    padding: 10px 14px;
     border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
     text-align: center;
-    background: rgba(255, 107, 107, 0.08);
-    border: 1px solid rgba(255, 107, 107, 0.2);
+    background: rgba(255, 100, 100, 0.08);
+    border: 1px solid rgba(255, 100, 100, 0.22);
 }
 
 .logout-btn:hover {
-    background-color: #ff6b6b;
+    background: rgba(255, 100, 100, 0.2);
     color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(255, 100, 100, 0.2);
 }
 
-/* ===== Main content ===== */
+/* ═══════════════════════════════════════════════════════════════
+   MAIN CONTENT
+═══════════════════════════════════════════════════════════════ */
 .main-content {
     flex-grow: 1;
-    padding: 40px 50px;
+    padding: 40px 48px;
     overflow-y: auto;
 }
 
-/* Header */
+/* ── Header ─────────────────────────────────────────────────── */
 header h1 {
     font-weight: 700;
-    font-size: 28px;
-    margin-bottom: 30px;
+    font-size: 1.9rem;
+    margin-bottom: 36px;
     color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 header .highlight {
-    color: #00b4d8;
+    color: #558ace;
 }
 
-/* ===== Stats cards ===== */
+/* ═══════════════════════════════════════════════════════════════
+   STATS CARDS
+═══════════════════════════════════════════════════════════════ */
 .stats-cards {
     display: flex;
-    gap: 25px;
-    margin-bottom: 40px;
+    gap: 18px;
+    margin-bottom: 44px;
     flex-wrap: wrap;
 }
 
 .stats-cards .card {
-    flex: 1 1 200px;
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.08);
+    flex: 1 1 180px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.09);
     border-radius: 14px;
-    padding: 28px 22px;
+    padding: 26px 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: #b0cfe0;
     cursor: default;
     transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .stats-cards .card:hover {
-    background: rgba(0, 180, 216, 0.12);
-    color: #fff;
+    background: rgba(85, 138, 206, 0.11);
+    border-color: rgba(85, 138, 206, 0.28);
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 180, 216, 0.15);
-    border-color: rgba(0, 180, 216, 0.3);
+    box-shadow: 0 10px 28px rgba(85, 138, 206, 0.18);
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .card-info label {
-    font-weight: 400;
-    font-size: 11px;
+    font-weight: 500;
+    font-size: 0.68rem;
     margin-bottom: 8px;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #7db8cc;
+    letter-spacing: 1.8px;
+    color: #6e84a3;
+    text-align: center;
 }
 
 .card-info h3 {
     font-weight: 700;
-    font-size: 28px;
+    font-size: 2rem;
     color: #ffffff;
     margin: 0;
+    text-align: center;
+    line-height: 1.1;
 }
 
-/* ===== Cinema Screens Section ===== */
+.card-icon {
+    font-size: 28px;
+    opacity: 0.4;
+    margin-top: 10px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ALERTS
+═══════════════════════════════════════════════════════════════ */
+.alert {
+    padding: 14px 20px;
+    border-radius: 10px;
+    margin-bottom: 24px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    backdrop-filter: blur(6px);
+}
+
+.alert-success {
+    background: rgba(40, 167, 69, 0.12);
+    color: #6ee09a;
+    border: 1px solid rgba(40, 167, 69, 0.28);
+}
+
+.alert-error {
+    background: rgba(220, 53, 69, 0.12);
+    color: #ff8a8a;
+    border: 1px solid rgba(220, 53, 69, 0.28);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ASSIGN MOVIES — Section
+═══════════════════════════════════════════════════════════════ */
+.movies-available {
+    padding: 32px 28px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    backdrop-filter: blur(6px);
+}
+
+.movies-available > h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 28px;
+    color: #558ace;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+/* ── Movie Assign Grid ───────────────────────────────────────── */
+.movie-assign-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 18px;
+}
+
+/* ── Movie Assign Card ───────────────────────────────────────── */
+.movie-assign-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    backdrop-filter: blur(6px);
+}
+
+.movie-assign-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(85, 138, 206, 0.32);
+    box-shadow: 0 12px 32px rgba(85, 138, 206, 0.18);
+}
+
+.movie-assign-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.movie-assign-card:hover img {
+    transform: scale(1.04);
+}
+
+.movie-assign-card .movie-card-body {
+    padding: 18px;
+}
+
+.movie-assign-card .movie-card-body h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 6px;
+    line-height: 1.3;
+}
+
+.movie-assign-card .movie-card-body .movie-meta {
+    font-size: 0.75rem;
+    color: #6e84a3;
+    margin-bottom: 16px;
+}
+
+/* ── Assign Form ─────────────────────────────────────────────── */
+.assign-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.assign-form select {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background-color: #111827 !important;
+    background: #111827 !important;
+    color: #c8d6e8 !important;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23558ace' d='M1 1l5 5 5-5'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    padding-right: 32px;
+}
+
+.assign-form select:hover,
+.assign-form select:focus {
+    border-color: rgba(85, 138, 206, 0.5);
+    box-shadow: 0 0 0 3px rgba(85, 138, 206, 0.12);
+}
+
+.assign-form select option {
+    background-color: #111827 !important;
+    background: #111827 !important;
+    color: #fff;
+    padding: 8px;
+}
+
+.btn-assign {
+    width: 100%;
+    background: rgba(85, 138, 206, 0.2);
+    color: #7fb3ef;
+    border: 1px solid rgba(85, 138, 206, 0.35);
+    padding: 10px 14px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    white-space: nowrap;
+    transition: all 0.25s ease;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.btn-assign:hover {
+    background: rgba(85, 138, 206, 0.35);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(85, 138, 206, 0.25);
+}
+
+.btn-assign:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CINEMA SECTION (dashboard.php)
+═══════════════════════════════════════════════════════════════ */
 .cinema-section {
     margin-top: 10px;
 }
 
 .cinema-section > h2 {
-    font-size: 22px;
-    font-weight: 600;
+    font-size: 1.4rem;
+    font-weight: 700;
     margin-bottom: 24px;
-    color: #e0f0f8;
+    color: #558ace;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
 }
 
 .cinema-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 18px;
 }
 
 .cinema-card {
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.09);
     border-radius: 14px;
-    padding: 24px;
+    padding: 22px;
     transition: all 0.3s ease;
+    backdrop-filter: blur(6px);
 }
 
 .cinema-card:hover {
-    border-color: rgba(0,180,216,0.3);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    border-color: rgba(85, 138, 206, 0.3);
+    box-shadow: 0 6px 22px rgba(85, 138, 206, 0.15);
+    transform: translateY(-2px);
 }
 
 .cinema-card-header {
@@ -230,23 +444,24 @@ header .highlight {
     align-items: center;
     margin-bottom: 16px;
     padding-bottom: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .cinema-card-header h3 {
-    font-size: 18px;
+    font-size: 1rem;
     font-weight: 600;
-    color: #00b4d8;
+    color: #558ace;
 }
 
 .cinema-card-header .capacity-badge {
-    background: rgba(0,180,216,0.15);
-    color: #7dd8eb;
-    font-size: 11px;
+    background: rgba(85, 138, 206, 0.12);
+    color: #7fb3ef;
+    font-size: 0.7rem;
     padding: 4px 10px;
     border-radius: 20px;
     font-weight: 500;
     letter-spacing: 0.5px;
+    border: 1px solid rgba(85, 138, 206, 0.22);
 }
 
 .assigned-movie {
@@ -254,23 +469,24 @@ header .highlight {
     align-items: center;
     gap: 14px;
     padding: 12px;
-    background: rgba(255,255,255,0.04);
+    background: rgba(255, 255, 255, 0.03);
     border-radius: 10px;
-    margin-bottom: 10px;
-    border: 1px solid rgba(255,255,255,0.05);
-    transition: all 0.2s ease;
+    margin-bottom: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.2s ease;
 }
 
 .assigned-movie:hover {
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.06);
 }
 
 .assigned-movie img {
-    width: 45px;
-    height: 65px;
+    width: 44px;
+    height: 62px;
     object-fit: cover;
     border-radius: 6px;
     flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .assigned-movie-info {
@@ -279,191 +495,67 @@ header .highlight {
 }
 
 .assigned-movie-info h4 {
-    font-size: 14px;
+    font-size: 0.85rem;
     font-weight: 600;
-    color: #e0f0f8;
+    color: #e0e8f4;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .assigned-movie-info p {
-    font-size: 11px;
-    color: #7db8cc;
+    font-size: 0.72rem;
+    color: #6e84a3;
     margin-top: 3px;
 }
 
 .btn-remove {
-    background: #dc3545;
-    color: white;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 6px;
+    background: rgba(220, 53, 69, 0.12);
+    color: #ff8a8a;
+    border: 1px solid rgba(220, 53, 69, 0.25);
+    padding: 6px 12px;
+    border-radius: 20px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
-    transition: all 0.3s ease;
-    white-space: nowrap;
     font-family: 'Montserrat', sans-serif;
+    white-space: nowrap;
+    transition: all 0.22s ease;
 }
 
 .btn-remove:hover {
-    background: #ff4757;
-    transform: scale(1.05);
-    box-shadow: 0 2px 8px rgba(220,53,69,0.4);
+    background: rgba(220, 53, 69, 0.28);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.2);
 }
 
 .no-movies-assigned {
-    color: #5a8a9e;
+    color: #4a6280;
     font-style: italic;
-    font-size: 13px;
+    font-size: 0.82rem;
     padding: 14px 0;
     text-align: center;
 }
 
-/* ===== Assign Movies Page ===== */
-.movies-available {
-    margin-top: 10px;
-}
-
-.movies-available > h2 {
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 24px;
-    color: #e0f0f8;
-}
-
-.movie-assign-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-}
-
-.movie-assign-card {
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 14px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.movie-assign-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(0,180,216,0.3);
-    box-shadow: 0 8px 28px rgba(0,0,0,0.3);
-}
-
-.movie-assign-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.movie-assign-card .movie-card-body {
-    padding: 18px;
-}
-
-.movie-assign-card .movie-card-body h3 {
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 8px;
-}
-
-.movie-assign-card .movie-card-body .movie-meta {
-    font-size: 12px;
-    color: #7db8cc;
-    margin-bottom: 14px;
-}
-
-.movie-assign-card .assign-form {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-.movie-assign-card .assign-form select {
-    flex: 1;
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.15);
-    background: rgba(0,0,0,0.3);
-    color: #fff;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-.movie-assign-card .assign-form select option {
-    background: #1a2a3a;
-    color: #fff;
-}
-
-.btn-assign {
-    background: linear-gradient(135deg, #00b4d8, #0077b6);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    font-family: 'Montserrat', sans-serif;
-}
-
-.btn-assign:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0,180,216,0.4);
-}
-
-.btn-assign:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-/* ===== Alerts ===== */
-.alert {
-    padding: 14px 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.alert-success {
-    background: rgba(40, 167, 69, 0.15);
-    color: #75e6a0;
-    border: 1px solid rgba(40, 167, 69, 0.3);
-}
-
-.alert-error {
-    background: rgba(220, 53, 69, 0.15);
-    color: #ff8a98;
-    border: 1px solid rgba(220, 53, 69, 0.3);
-}
-
-/* ===== Branch Selector ===== */
+/* ═══════════════════════════════════════════════════════════════
+   BRANCH SELECTOR
+═══════════════════════════════════════════════════════════════ */
 .branch-selector {
     display: flex;
     align-items: center;
     gap: 14px;
     margin-bottom: 28px;
     padding: 16px 22px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(0,180,216,0.2);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(85, 138, 206, 0.2);
     border-radius: 12px;
     backdrop-filter: blur(8px);
 }
 
 .branch-selector label {
     font-weight: 600;
-    font-size: 14px;
-    color: #7db8cc;
+    font-size: 0.85rem;
+    color: #6e84a3;
     white-space: nowrap;
 }
 
@@ -472,78 +564,137 @@ header .highlight {
     max-width: 350px;
     padding: 10px 16px;
     border-radius: 8px;
-    border: 1px solid rgba(0,180,216,0.3);
-    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(85, 138, 206, 0.25);
+    background: rgba(255, 255, 255, 0.06);
     color: #fff;
     font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
+    font-size: 0.88rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
+    outline: none;
 }
 
 .branch-selector select:hover,
 .branch-selector select:focus {
-    border-color: #00b4d8;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(0,180,216,0.15);
+    border-color: rgba(85, 138, 206, 0.5);
+    box-shadow: 0 0 0 3px rgba(85, 138, 206, 0.12);
 }
 
 .branch-selector select option {
-    background: #0f2027;
+    background: #111827;
     color: #fff;
     padding: 8px;
 }
 
-/* ===== Responsive ===== */
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+    .main-content {
+        padding: 32px 28px;
+    }
+    .sidebar {
+        width: 220px;
+        min-width: 220px;
+    }
+}
+
 @media (max-width: 900px) {
     body {
         flex-direction: column;
+        height: auto;
     }
 
     .sidebar {
         width: 100%;
-        min-height: auto;
+        min-width: unset;
+        height: auto;
+        position: relative;
         flex-direction: row;
-        padding: 15px 20px;
-        gap: 15px;
+        flex-wrap: wrap;
+        padding: 14px 18px;
+        gap: 12px;
         align-items: center;
-        overflow-x: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     }
 
     .profile-section {
+        border-bottom: none;
+        padding-bottom: 0;
         display: flex;
         align-items: center;
         gap: 10px;
+        text-align: left;
+    }
+
+    .profile-section h2 {
+        font-size: 0.85rem;
     }
 
     .profile-pic {
-        width: 40px;
-        height: 40px;
+        width: 38px;
+        height: 38px;
         margin-bottom: 0;
     }
 
     .sidebar-nav {
         flex-direction: row;
-        gap: 5px;
+        flex-wrap: wrap;
+        gap: 6px;
     }
 
     .sidebar-nav a {
         white-space: nowrap;
-        font-size: 12px;
+        font-size: 0.8rem;
         padding: 8px 12px;
     }
 
     .sidebar-footer {
-        display: none;
+        border-top: none;
+        padding-top: 0;
     }
 
     .main-content {
-        padding: 20px;
+        padding: 24px 18px;
+    }
+
+    header h1 {
+        font-size: 1.4rem;
+        margin-bottom: 24px;
     }
 
     .cinema-grid,
     .movie-assign-grid {
         grid-template-columns: 1fr;
+    }
+
+    .movies-available {
+        padding: 22px 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        padding: 16px 14px;
+    }
+
+    header h1 {
+        font-size: 1.2rem;
+    }
+
+    .movie-assign-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .assign-form {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .assign-form select,
+    .btn-assign {
+        width: 100%;
     }
 }

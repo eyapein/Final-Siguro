@@ -1,6 +1,7 @@
-/* Reset & base */
+/* ── Imports ─────────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
 
+/* ── Reset ───────────────────────────────────────────────────── */
 * {
     margin: 0;
     padding: 0;
@@ -8,159 +9,189 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-body, html {
+/* ── Base ────────────────────────────────────────────────────── */
+html, body {
     height: 100%;
     font-family: 'Montserrat', sans-serif;
 }
 
-/* Background Gradient */
 body {
-    background: linear-gradient(135deg, #7E8D93, #373D3F, #FDFDFD);
-    color: #fff; /* FONT COLOR - Admin Body Text */
+    background:
+        radial-gradient(ellipse at 15% 15%, rgba(85, 138, 206, 0.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 85%, rgba(85, 138, 206, 0.04) 0%, transparent 55%),
+        #0b0b0b;
+    color: #fff;
     display: flex;
-    height: 100vh;
-    font-weight: 400; /* Body text Regular */
+    min-height: 100vh;
+    font-weight: 400;
 }
 
-/* Sidebar */
+/* ═══════════════════════════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════════════════════════ */
 .sidebar {
-    background: #0e1229;
-    width: 250px;
+    background: rgba(8, 8, 16, 0.97);
+    width: 255px;
+    min-width: 255px;
     padding: 30px 20px;
     display: flex;
     flex-direction: column;
-    gap: 40px;
-    box-shadow: 2px 0 8px rgba(0,0,0,0.2);
-    position: relative;
+    gap: 28px;
+    border-right: 1px solid rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    z-index: 100;
+    overflow-y: auto;
 }
 
+/* Profile */
 .profile-section {
     text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .profile-pic {
-    width: 80px;
-    height: 80px;
+    width: 76px;
+    height: 76px;
     border-radius: 50%;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     object-fit: cover;
-    border: 3px solid #7E8D93;
+    border: 2px solid rgba(85, 138, 206, 0.45);
+    box-shadow: 0 0 20px rgba(85, 138, 206, 0.18);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .profile-pic.clickable-logo:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(126, 141, 147, 0.5);
+    transform: scale(1.08);
+    box-shadow: 0 0 28px rgba(85, 138, 206, 0.4);
     cursor: pointer;
 }
 
 .profile-section h2 {
     font-weight: 600;
-    color: #fff; /* FONT COLOR - Sidebar Profile Name */
+    font-size: 0.9rem;
+    color: #e0e0e0;
+    letter-spacing: 0.4px;
 }
 
-/* Sidebar navigation links */
+/* Nav links */
 .sidebar-nav {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 4px;
     flex-grow: 1;
 }
 
 .sidebar-nav a {
-    color: #b0b0c2; /* FONT COLOR - Sidebar Nav Link */
+    color: #8a8aaa;
     text-decoration: none;
     font-weight: 500;
-    padding: 8px 15px;
-    border-radius: 6px;
-    transition: background 0.3s, color 0.3s;
+    font-size: 0.88rem;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .sidebar-nav a:hover,
 .sidebar-nav a.active {
-    background-color: #373D3F;
-    color: #fff; /* FONT COLOR - Sidebar Nav Link Active */
+    background: rgba(85, 138, 206, 0.13);
+    color: #fff;
+    border-color: rgba(85, 138, 206, 0.22);
 }
 
-/* Sidebar footer with logout button */
+/* Sidebar footer */
 .sidebar-footer {
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    min-height: 60px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
     display: flex;
     align-items: flex-start;
 }
 
 .logout-btn {
     display: block;
-    color: #ff6b6b; /* FONT COLOR - Logout Button */
+    width: 100%;
+    color: #ff7a7a;
     text-decoration: none;
     font-weight: 500;
-    padding: 12px 15px;
-    border-radius: 6px;
-    transition: background 0.3s, color 0.3s;
+    font-size: 0.88rem;
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: all 0.25s ease;
     text-align: center;
-    background: rgba(255, 107, 107, 0.1);
-    border: 1px solid rgba(255, 107, 107, 0.3);
+    background: rgba(255, 100, 100, 0.08);
+    border: 1px solid rgba(255, 100, 100, 0.22);
 }
 
 .logout-btn:hover {
-    background-color: #ff6b6b;
-    color: #fff; /* FONT COLOR - Logout Button Hover */
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+    background: rgba(255, 100, 100, 0.2);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(255, 100, 100, 0.2);
 }
 
-/* Main content area */
+/* ═══════════════════════════════════════════════════════════════
+   MAIN CONTENT
+═══════════════════════════════════════════════════════════════ */
 .main-content {
     flex-grow: 1;
-    padding: 40px 50px;
+    padding: 40px 48px;
     overflow-y: auto;
 }
 
-/* Header */
+/* ── Header ─────────────────────────────────────────────────── */
 header h1 {
-    font-weight: 600;
-    font-size: 28px;
-    margin-bottom: 30px;
-    color: #fff; /* FONT COLOR - Admin Page Heading */
+    font-weight: 700;
+    font-size: 1.9rem;
+    margin-bottom: 36px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 header .highlight {
-    color: #ff2a59; /* FONT COLOR - Admin Heading Highlight */
+    color: #558ace;
 }
 
-/* Stats cards section */
-/* Stats cards section */
+/* ═══════════════════════════════════════════════════════════════
+   STATS CARDS
+═══════════════════════════════════════════════════════════════ */
 .stats-cards {
     display: flex;
-    gap: 25px;
-    margin-bottom: 50px;
+    gap: 18px;
+    margin-bottom: 44px;
     flex-wrap: wrap;
-    justify-content: center; /* Center the row of cards */
 }
 
 .stats-cards .card {
-    flex: 1 1 220px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 30px 20px;
+    flex: 1 1 180px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 14px;
+    padding: 26px 20px;
     display: flex;
-    flex-direction: column;      /* stack label + number + icon vertically */
-    justify-content: center;     /* vertically center */
-    align-items: center;         /* horizontally center */
-    text-align: center;          /* center text */
-    color: #cbd5e1; /* FONT COLOR - Stats Card Text */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     cursor: default;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .stats-cards .card:hover {
-    background: rgba(55, 61, 63, 0.9);
-    color: #fff; /* FONT COLOR - Stats Card Hover */
+    background: rgba(85, 138, 206, 0.11);
+    border-color: rgba(85, 138, 206, 0.28);
     transform: translateY(-4px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 28px rgba(85, 138, 206, 0.18);
 }
 
 .card-info {
@@ -170,122 +201,365 @@ header .highlight {
 }
 
 .card-info label {
-    font-weight: 400;
-    font-size: 13px;
-    margin-bottom: 6px;
+    font-weight: 500;
+    font-size: 0.68rem;
+    margin-bottom: 8px;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: #dbeafe; /* FONT COLOR - Stats Card Label */
+    letter-spacing: 1.8px;
+    color: #6e84a3;
     text-align: center;
 }
 
 .card-info h3 {
     font-weight: 700;
-    font-size: 26px;
-    color: #ffffff; /* FONT COLOR - Stats Card Number */
+    font-size: 2rem;
+    color: #ffffff;
     margin: 0;
     text-align: center;
+    line-height: 1.1;
 }
 
-/* Card icon styling */
 .card-icon {
-    font-size: 34px;
-    opacity: 0.6;
+    font-size: 28px;
+    opacity: 0.4;
     margin-top: 10px;
 }
 
-
-/* Active movies section */
-.active-movies h2 {
-    font-weight: 60;
-    font-size: 2px;
-    margin-bottom: 20px;
-    color: #fff; /* FONT COLOR - Active Movies Heading */
-}
-
-/* Movies List */
-.movies-list {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.movie-card {
-    width: 200px;               /* Set a fixed smaller width */
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: rgba(255 255 255 / 0.1);
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    flex-shrink: 0;             /* Prevent shrinking */
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.movie-card:hover {
-    transform: scale(1.05);
-}
-
-.movie-card img {
-    width: 100%;               /* Image fills card width */
-    height: 280px;             /* Fixed height for uniformity; adjust as needed */
-    object-fit: cover;
-    display: block;
-    border-bottom: 1px solid rgba(255 255 255 / 0.2);
-}
-
-/* Styling movie info text */
-/* Movie Grid Styling for Admin Panel */
+/* ═══════════════════════════════════════════════════════════════
+   MOVIE SECTIONS
+═══════════════════════════════════════════════════════════════ */
 .main-content #now-showing,
 .main-content #coming-soon {
-  padding: 40px 20px;
-  margin: 30px 0;
-  background: linear-gradient(135deg, rgba(126, 141, 147, 0.05), rgba(55, 61, 63, 0.05));
-  border-radius: 20px;
+    padding: 32px 28px;
+    margin: 22px 0;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    backdrop-filter: blur(6px);
 }
 
 .main-content #now-showing h2 {
-  text-align: center;
-  font-size: 2.5em;
-  margin-bottom: 40px;
-  color: #7E8D93; /* FONT COLOR - Admin Now Showing Heading */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 28px;
+    color: #558ace;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
 }
 
 .main-content #coming-soon {
-  background: linear-gradient(135deg, rgba(126, 141, 147, 0.219), rgba(126, 141, 147, 0.082));
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.06);
 }
 
 .main-content #coming-soon h2 {
-  text-align: center;
-  font-size: 2.5em;
-  margin-bottom: 40px;
-  color: #586164; /* FONT COLOR - Admin Coming Soon Heading */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 28px;
+    color: #7a92b5;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
 }
 
+/* ── Movie Grid ──────────────────────────────────────────────── */
 .main-content .movie-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  justify-content: center;
-  padding: 0 20px;
-  max-width: 1400px;
-  margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 18px;
+    padding: 0;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
-.movie-info h3 {
-    font-size: 16px;
-    color: white; /* FONT COLOR - Admin Movie Card Title */
-    margin: 0 10px 10px;
+/* ── Now Showing — Movie Card ────────────────────────────────── */
+.main-content #now-showing .movie {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    aspect-ratio: 2 / 3;
+}
+
+.main-content #now-showing .movie:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 36px rgba(85, 138, 206, 0.22);
+    border-color: rgba(85, 138, 206, 0.32);
+}
+
+.main-content #now-showing .movie > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.main-content #now-showing .movie:hover > img {
+    transform: scale(1.06);
+}
+
+/* Overlay revealed on hover */
+.movie-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top,
+        rgba(5, 5, 15, 0.97) 0%,
+        rgba(5, 5, 15, 0.75) 50%,
+        transparent 100%);
+    padding: 28px 14px 14px;
+    transform: translateY(100%);
+    transition: transform 0.35s ease;
+}
+
+.main-content #now-showing .movie:hover .movie-overlay {
+    transform: translateY(0);
+}
+
+.movie-overlay .movie-info h3 {
+    font-size: 0.88rem;
+    color: #fff;
+    margin: 0 0 5px;
     font-weight: 600;
+    line-height: 1.3;
 }
 
-.price-rating {
+.movie-overlay .movie-info p {
+    font-size: 0.74rem;
+    color: #8899aa;
+    margin-bottom: 12px;
+}
+
+/* ── Movie Actions ───────────────────────────────────────────── */
+.movie-actions {
     display: flex;
-    justify-content: space-between;
-    padding: 0 10px 10px;
-    font-size: 14px;
-    color: #ddd; /* FONT COLOR - Admin Movie Price & Rating */
+    flex-direction: column;
+    gap: 6px;
+}
+
+.action-btn {
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    transition: all 0.22s ease;
+    letter-spacing: 0.3px;
+    border: 1px solid transparent;
+}
+
+.trailer-btn {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ccc;
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.trailer-btn:hover {
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+}
+
+.ticket-btn {
+    background: rgba(85, 138, 206, 0.15);
+    color: #7fb3ef;
+    border-color: rgba(85, 138, 206, 0.3);
+}
+
+.ticket-btn:hover {
+    background: rgba(85, 138, 206, 0.28);
+    color: #fff;
+}
+
+.delete-btn {
+    background: rgba(231, 76, 60, 0.12) !important;
+    color: #ff8a8a !important;
+    border: 1px solid rgba(231, 76, 60, 0.25) !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    font-family: 'Montserrat', sans-serif !important;
+    padding: 7px 12px !important;
+    border-radius: 20px !important;
+    cursor: pointer !important;
+    transition: all 0.22s ease !important;
+    width: 100% !important;
+}
+
+.delete-btn:hover {
+    background: rgba(231, 76, 60, 0.28) !important;
+    color: #fff !important;
+}
+
+/* ── Coming Soon — Movie Card ────────────────────────────────── */
+.main-content #coming-soon .movie {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.main-content #coming-soon .movie:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+.main-content #coming-soon .movie img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.main-content #coming-soon .movie:hover img {
+    transform: scale(1.04);
+}
+
+.main-content #coming-soon .movie-info {
+    padding: 14px 14px 8px;
+}
+
+.main-content #coming-soon .movie-info h3 {
+    font-size: 0.9rem;
+    color: #fff;
+    margin-bottom: 4px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.main-content #coming-soon .movie-info p {
+    font-size: 0.76rem;
+    color: #7a8899;
+    margin-bottom: 10px;
+}
+
+.notify-btn {
+    display: block;
+    width: calc(100% - 28px);
+    margin: 0 14px 8px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: rgba(85, 138, 206, 0.12);
+    color: #7fb3ef;
+    border: 1px solid rgba(85, 138, 206, 0.28);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    letter-spacing: 0.3px;
+    text-align: center;
+}
+
+.notify-btn:hover {
+    background: rgba(85, 138, 206, 0.26);
+    color: #fff;
+}
+
+.main-content #coming-soon .action-btn.delete-btn {
+    width: calc(100% - 28px) !important;
+    margin: 0 14px 12px !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+    .main-content {
+        padding: 32px 28px;
+    }
+    .sidebar {
+        width: 220px;
+        min-width: 220px;
+    }
+}
+
+@media (max-width: 820px) {
+    body {
+        flex-direction: column;
+        height: auto;
+    }
+    .sidebar {
+        width: 100%;
+        min-width: unset;
+        height: auto;
+        position: relative;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 14px 18px;
+        gap: 12px;
+        align-items: center;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .profile-section {
+        border-bottom: none;
+        padding-bottom: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-align: left;
+    }
+    .profile-pic {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 0;
+    }
+    .sidebar-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .sidebar-footer {
+        border-top: none;
+        padding-top: 0;
+    }
+    .main-content {
+        padding: 24px 18px;
+    }
+    header h1 {
+        font-size: 1.4rem;
+        margin-bottom: 24px;
+    }
+    .stats-cards {
+        gap: 12px;
+    }
+    .main-content .movie-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        padding: 16px 14px;
+    }
+    header h1 {
+        font-size: 1.2rem;
+    }
+    .main-content .movie-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    .main-content #now-showing,
+    .main-content #coming-soon {
+        padding: 22px 16px;
+    }
+    .card-info h3 {
+        font-size: 1.6rem;
+    }
 }
